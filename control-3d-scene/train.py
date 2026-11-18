@@ -63,7 +63,7 @@ class Trainer:
             self.model.train()
             if self.sampler is not None:
                 self.sampler.set_epoch(epoch)
-            running, count = {}, 0
+            running, window, count = {}, {}, 0
             max_iters = self.cfg.get("max_iters", 0)
             for batch in self.loader:
                 if max_iters and count >= max_iters:
@@ -72,7 +72,9 @@ class Trainer:
                 losses = self._step(batch)
                 losses["total"].backward()
                 if self.cfg.get("clip_norm", None):
-                    torch.nn.utils.clip_grad_norm_(self.model.parameters(), self.cfg.clip_norm)
+                    # norm before clipping, logged to spot instabilities
+                    losses["grad_norm"] = torch.nn.utils.clip_grad_norm_(
+                        self.model.parameters(), self.cfg.clip_norm)
                 if self.cfg.get("clip_value", None):
                     torch.nn.utils.clip_grad_value_(self.model.parameters(), self.cfg.clip_value)
                 self.optimizer.step()
@@ -82,8 +84,11 @@ class Trainer:
                 count += 1
                 for k, v in losses.items():
                     running[k] = running.get(k, 0.0) + float(v.detach())
+                    window[k] = window.get(k, 0.0) + float(v.detach())
                 if is_main_process() and count % print_every == 0:
-                    msg = ", ".join(f"{k}: {running[k] / count:.4f}" for k in running)
+                    # mean over the last `print_every` steps (not the epoch so far)
+                    msg = ", ".join(f"{k}: {window[k] / print_every:.4f}" for k in window)
+                    window = {}
                     el = (time.time() - self.t0) / 3600
                     print(f"[{self.cfg.stage}/{self.cfg.mode}] epoch {epoch + 1}/{self.cfg.epochs} "
                           f"iter {count}/{len(self.loader)} | {msg} | {el:.2f} h", end=line_end,

@@ -48,7 +48,8 @@ momentum_sqr: 0.999
 warmup: null
 milestones: []
 gamma: 0.1
-clip_norm: null
+clip_norm: 1.0             # Liu: null. Run 1 without clipping had a loss spike at lr 0.004
+                           # (diffusion ~5 -> ~16 in epoch 2); same setting for all compared models
 clip_value: null
 
 resume: false
