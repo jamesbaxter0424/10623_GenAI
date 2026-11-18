@@ -10,6 +10,8 @@ Reads data/processed/city/ from the nyc-massing-data pipeline. Each item is one
       Liu's road-type one-hot is dropped (no counterpart for city blocks).
   heatmap  = one-hot cell at the centroid of the block's cells inside the window
              (ground-truth position used for joint training, as in Liu)
+  nodes    = blocks with >= min_visible_cells cells inside the window (20 cells = 320 m2
+             in the configs); smaller slivers cut by the window edge are dropped.
   edges    = k nearest blocks by centroid (symmetric). The street-facing graph of
              the dataset is change 1 and is NOT used here.
   NOT given: numeric targets (coverage, FAR, ...), block polygons, map context.
@@ -68,9 +70,11 @@ def knn_edges(cent, k):
 
 class NYCSceneGraphDataset(Dataset):
     def __init__(self, root, split="train", knn=4, feature_mask_ratio=0.0,
-                 exclude_ctx_leak=True, sample_ids=None, max_samples=None, repeat=1):
+                 exclude_ctx_leak=True, sample_ids=None, max_samples=None, repeat=1,
+                 min_visible_cells=0):
         self.root = root
         self.knn = knn
+        self.min_visible_cells = min_visible_cells
         self.feature_mask_ratio = feature_mask_ratio
         self.repeat = repeat
         self.cls = np.load(os.path.join(root, "cls.npy"), mmap_mode="r")
@@ -101,9 +105,15 @@ class NYCSceneGraphDataset(Dataset):
         blk = np.asarray(self.block[r0:r0 + N, c0:c0 + N], dtype=np.int64)
         return r, cls, blk
 
-    def build_graph(self, blk):
-        nodes, local = np.unique(blk[blk >= 0], return_inverse=True)
-        rr, cc = np.nonzero(blk >= 0)
+    def build_graph(self, blk, targets=()):
+        """Nodes = blocks with >= min_visible_cells cells inside the window (slivers of
+        blocks cut by the window edge are dropped; target blocks are always kept)."""
+        nodes, cnt = np.unique(blk[blk >= 0], return_counts=True)
+        keep = (cnt >= self.min_visible_cells) | np.isin(nodes, targets)
+        nodes = nodes[keep]
+        inside = np.isin(blk, nodes)
+        rr, cc = np.nonzero(inside)
+        local = np.searchsorted(nodes, blk[inside])
         cnt = np.bincount(local, minlength=len(nodes))
         cent = np.stack([np.bincount(local, rr, len(nodes)) / cnt,
                          np.bincount(local, cc, len(nodes)) / cnt], 1)
@@ -120,8 +130,8 @@ class NYCSceneGraphDataset(Dataset):
 
     def __getitem__(self, idx):
         r, cls, blk = self.window(idx)
-        nodes, cent, labels, feats, heat = self.build_graph(blk)
         targets = np.asarray(r["targets"], dtype=np.int64)
+        nodes, cent, labels, feats, heat = self.build_graph(blk, targets)
         sg = Data(x=torch.from_numpy(feats),
                   edge_index=torch.from_numpy(knn_edges(cent, self.knn)),
                   y=torch.from_numpy(labels),

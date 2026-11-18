@@ -22,6 +22,7 @@ feature_mask_ratio: 0.3
 
 nyc_root: /home/ubuntu/genai-final/data/city
 knn: 4                     # baseline graph: 4 nearest blocks (street-facing graph = change 1)
+min_visible_cells: 20      # drop blocks with < 20 cells (320 m2) inside the window; targets always kept
 train_split: train
 val_split: val
 max_samples: 0

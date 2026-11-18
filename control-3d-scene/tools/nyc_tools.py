@@ -30,12 +30,12 @@ def make_subset(root, out, split="test", seed=0):
     print(f"{out}: {len(ids)} {split} windows; group sizes in first 200: {k}")
 
 
-def check(root, out, n=8, seed=1):
+def check(root, out, n=8, seed=1, min_cells=20):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
     os.makedirs(out, exist_ok=True)
-    ds = NYCSceneGraphDataset(root, "train")
+    ds = NYCSceneGraphDataset(root, "train", min_visible_cells=min_cells)
     idx = np.random.default_rng(seed).choice(len(ds), n, replace=False)
 
     cols = 4
@@ -80,5 +80,6 @@ if __name__ == "__main__":
     p.add_argument("--root", required=True)
     p.add_argument("--out", required=True)
     p.add_argument("--n", type=int, default=8)
+    p.add_argument("--min_cells", type=int, default=20)
     a = p.parse_args()
-    make_subset(a.root, a.out) if a.cmd == "subset" else check(a.root, a.out, a.n)
+    make_subset(a.root, a.out) if a.cmd == "subset" else check(a.root, a.out, a.n, min_cells=a.min_cells)
