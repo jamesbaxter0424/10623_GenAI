@@ -56,11 +56,14 @@ class SGtoBEV(nn.Module):
         return F.cross_entropy(gnn_out["loc_logits"], target)
 
     @torch.no_grad()
-    def sample(self, scene_graph, tau=None, num_steps=None):
+    def sample(self, scene_graph, tau=None, num_steps=None, use_gt_positions=False):
         gnn_out = self.gnn(scene_graph)
-        positions = positions_from_logits(
-            gnn_out["loc_logits"], scene_graph.batch, self.bev_size,
-            tau=self.gumbel_tau if tau is None else tau, move=self.overlap_move)
+        if use_gt_positions:  # diagnostic: skip the localization head
+            positions = scene_graph.heatmaps
+        else:
+            positions = positions_from_logits(
+                gnn_out["loc_logits"], scene_graph.batch, self.bev_size,
+                tau=self.gumbel_tau if tau is None else tau, move=self.overlap_move)
         num_graphs = int(scene_graph.batch.max()) + 1
         bem = build_bem(gnn_out["cane"], positions, scene_graph.batch, num_graphs)
         bev = self.diffusion.sample(bem, num_steps)

@@ -1,4 +1,6 @@
+import glob
 import os
+import time
 
 import torch
 from torch.utils.tensorboard import SummaryWriter
@@ -45,8 +47,19 @@ class Trainer:
         scene = batch["scene_3d"].to(self.device)
         return self.model(bev, scene)
 
+    def _out_of_time(self):
+        hours = self.cfg.get("max_hours", None)
+        return bool(hours) and (time.time() - self.t0) / 3600 >= float(hours)
+
     def train(self):
+        self.t0 = time.time()
+        print_every = self.cfg.get("print_every", 20)
+        line_end = "\n" if self.cfg.get("log_newline", False) else "\r"
+        epoch = self.start_epoch
         for epoch in range(self.start_epoch, self.cfg.epochs):
+            if self._out_of_time():
+                print(f"\nTime budget of {self.cfg.max_hours} h reached before epoch {epoch + 1}.")
+                break
             self.model.train()
             if self.sampler is not None:
                 self.sampler.set_epoch(epoch)
@@ -69,10 +82,14 @@ class Trainer:
                 count += 1
                 for k, v in losses.items():
                     running[k] = running.get(k, 0.0) + float(v.detach())
-                if is_main_process() and count % 20 == 0:
+                if is_main_process() and count % print_every == 0:
                     msg = ", ".join(f"{k}: {running[k] / count:.4f}" for k in running)
+                    el = (time.time() - self.t0) / 3600
                     print(f"[{self.cfg.stage}/{self.cfg.mode}] epoch {epoch + 1}/{self.cfg.epochs} "
-                          f"iter {count}/{len(self.loader)} | {msg}", end="\r")
+                          f"iter {count}/{len(self.loader)} | {msg} | {el:.2f} h", end=line_end,
+                          flush=True)
+                if self._out_of_time():
+                    break
 
             if self.scheduler_epoch:
                 self.scheduler_epoch.step()
@@ -85,12 +102,19 @@ class Trainer:
                 if (epoch + 1) % self.cfg.check_every == 0:
                     self._save_checkpoint(epoch + 1)
         if is_main_process():
-            self._save_checkpoint(self.cfg.epochs, name="latest.tar")
+            self._save_checkpoint(epoch + 1, name="latest.tar")
 
     def _save_checkpoint(self, epoch, name=None):
         ckpt = {"epoch": epoch, "model": self.module.state_dict(),
                 "optimizer": self.optimizer.state_dict()}
         path = os.path.join(self.log_path, name or f"epoch{epoch}.tar")
         torch.save(ckpt, path)
-        torch.save(ckpt, os.path.join(self.log_path, "latest.tar"))
-        print(f"Saved checkpoint: {path}")
+        if name != "latest.tar":
+            torch.save(ckpt, os.path.join(self.log_path, "latest.tar"))
+        print(f"Saved checkpoint: {path}", flush=True)
+        keep = self.cfg.get("keep_ckpts", 0)
+        if keep:  # each checkpoint is ~0.7 GB: keep only the newest `keep` epoch files
+            olds = sorted(glob.glob(os.path.join(self.log_path, "epoch*.tar")),
+                          key=os.path.getmtime)
+            for p in olds[:-keep]:
+                os.remove(p)

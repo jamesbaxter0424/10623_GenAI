@@ -132,4 +132,6 @@ def collate_scene_graphs(batch):
         out["bev"] = torch.stack([b["bev"] for b in batch])
     if "scene_3d" in batch[0]:
         out["scene_3d"] = torch.stack([b["scene_3d"] for b in batch])
+    if "mask" in batch[0]:  # NYC: target-block mask, used only for evaluation
+        out["mask"] = torch.stack([b["mask"] for b in batch])
     return out
