@@ -1,0 +1,37 @@
+# Chinese progress log (local only)
+/README_zh.md
+
+# Model code is versioned in this repo; its own ignore rules live in control-3d-scene/.gitignore
+
+# Data and large artifacts
+nyc-massing-data/data/
+nyc-massing-data/logs/
+*.npy
+*.npz
+*.parquet
+*.tar
+*.pth
+checkpoints/
+generated/
+
+# Secrets
+*.pem
+.env
+
+# Python / OS / editors
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.DS_Store
+Thumbs.db
+.vscode/
+
+# LaTeX build files
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+*.synctex.gz
+*.fdb_latexmk
+*.fls

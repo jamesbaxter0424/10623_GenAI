@@ -1,0 +1,29 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{10x23project}[Compact Project Style]
+
+% Packages
+\RequirePackage{natbib}      % For bibliography management
+\RequirePackage{graphicx}    % For including graphics
+\RequirePackage{amsmath}     % For math symbols and equations
+\RequirePackage{geometry}    % To adjust page margins
+\RequirePackage{hyperref}    % For hyperlinks in the document
+\RequirePackage{times}
+\RequirePackage[switch]{lineno}      % For line numbers
+
+% Set the page geometry
+\geometry{a4paper, margin=0.75in}
+
+% ================================
+% Save space
+% ================================
+\RequirePackage{enumitem}
+\setlist{
+  topsep=3pt,    % Reduced space above and below the list
+  itemsep=2pt,   % Reduced space between items
+  parsep=0pt     % Removes extra space for multi-paragraph items
+}
+
+\RequirePackage[compact]{titlesec}
+
+\RequirePackage{titling}
+\setlength{\droptitle}{-3em}

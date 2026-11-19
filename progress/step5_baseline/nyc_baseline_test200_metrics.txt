@@ -1,0 +1,18 @@
+
+/home/ubuntu/genai-final/generated/nyc_baseline_test200/Generated: 200 windows
+  cell_acc        0.317  [0.301, 0.333]
+  bldg_acc        0.554  [0.539, 0.568]
+  cov_err         0.278  [0.262, 0.296]
+  hclass_acc      0.760  [0.715, 0.804]
+  use_acc         0.782  [0.739, 0.825]
+  diversity       0.610  [0.597, 0.622]
+  street_in_mask  0.350  [0.334, 0.366]
+
+/home/ubuntu/genai-final/generated/nyc_baseline_test200_gtpos/Generated: 200 windows
+  cell_acc        0.417  [0.402, 0.432]
+  bldg_acc        0.594  [0.584, 0.603]
+  cov_err         0.118  [0.107, 0.130]
+  hclass_acc      0.861  [0.824, 0.897]
+  use_acc         0.863  [0.821, 0.901]
+  diversity       0.536  [0.523, 0.551]
+  street_in_mask  0.107  [0.098, 0.117]
