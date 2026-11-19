@@ -35,3 +35,6 @@ Thumbs.db
 *.synctex.gz
 *.fdb_latexmk
 *.fls
+
+# Report: separate git repo synced with Overleaf
+/latex/

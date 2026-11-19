@@ -12,7 +12,7 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 |---|---|
 | `control-3d-scene/` | Model code. **Adapted from [Liu et al., control-3d-scene](https://github.com/yuhengliu02/control-3d-scene)** (commit `9437101`, MIT License, see `control-3d-scene/LICENSE`). The first commit of this repository imports their code unmodified; all later changes to this folder are ours, so `git diff 4b33356 -- control-3d-scene` lists them. |
 | `nyc-massing-data/` | NYC data pipeline (Daehong). The built data (`data/`, about 2 GB) is not in the repository; run the pipeline to rebuild it. |
-| `latex/` | Proposal (`main.tex`) and midway executive summary (`midway.tex`) |
+| `latex/` | Not tracked here. The proposal (`main.tex`) and midway executive summary (`midway.tex`) live in the team's Overleaf project; locally `latex/` is a git clone of that project. |
 | `progress/` | Figures and logs of each step |
 
 ## Current status
