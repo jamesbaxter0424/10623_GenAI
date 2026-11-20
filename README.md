@@ -414,7 +414,9 @@ On AWS, the existing checkpoints generated the first 1,000 test windows × 4 sam
 - **Generated blocks are easy to spot**: the CNN separates them 96% of the time (87% with true centers). The CNN varies a lot across the 5 splits (75–98%); more windows or repeats should stabilise it.
 - Street wall vs neighbour is slightly worse with true centers (0.070 vs 0.057); a small gap, to be revisited with change 3.
 
-The two Liu rows of midway Table 2 are filled and the Baseline results paragraph has a summary sentence, pushed to Overleaf (the text now fills exactly four pages).
+The two Liu rows of midway Table 2 are filled and the Baseline results paragraph has a summary sentence, pushed to Overleaf.
+
+**Midway scope (Nov 20)**: the retrieval baseline and the no-GNN ablation are **removed from the midway plan for now** (Table 2, introduction, related work, methods, Q4, timeline). The research questions are Q1–Q3; if short of time, (1) and (3) are trained first. The text now has about nine lines of slack.
 
 ---
 
