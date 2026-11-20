@@ -428,6 +428,34 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Midway AI-use section shortened (Nov 20)**: James makes the design decisions; the AI implements and suggests, and James reviews before adopting. Checks are (1) reviewing AI proposals (e.g. true centers, dropping Out-Block, a literature basis for each metric) and (2) testing the code (plots on the real map, 8-tile overfit, reproducing the oracle row). The duplicate true-center example was removed from Human work. About two lines of slack.
 
+### Step 8: CityDreamer baseline, preparation (Nov 20, in progress)
+
+**Why**: COHO's code is not released. CityDreamer (CVPR 2024) releases code and weights, generates semantic and height maps (a grid like ours) and **sees the surroundings** when it fills a region, so it is a "context but no targets" baseline. We use the **released weights without training** (zero-shot).
+
+**Input**: only the real map of the window with the target blocks masked; no text, targets, graph or land use.
+1. Our 4 m map -> its layout: height field (metres) + one-hot of six classes, 9 x 9 px per cell (0.444 m/px, close to its 0.45 m).
+2. The VQGAN encodes it into tokens (16 px, about 7 m).
+3. Tokens touching a target block are masked; the sampler fills them from the surroundings (32 steps, as in its inference).
+4. Back to our 4 m grid inside the target blocks only; the real map elsewhere; saved in the evaluation format.
+
+**Checked in the code**:
+- Heights are in **metres** (OSM building heights).
+- Masked filling is **built in**; CityDreamer extends cities this way.
+- Untagged ground is trained as **road**, so it cannot tell open ground from road; non-building cells inside a block become **open**.
+- **No land use**: generated buildings are written as residential; **Res. err. and Use acc. are n/a**; the CNN test uses `--collapse_use`.
+- The authors' demo ships **New York** height and segmentation maps, so the pre-training data likely include New York and may cover our test districts. This can only flatter the baseline; to be stated in the report.
+- The checkpoint stores multi-GPU names (`module.`) and the release loads with `strict=False`, which would silently skip weights; we strip the prefix and load strictly.
+
+**Done**:
+- Code in [baselines/citydreamer/](baselines/citydreamer/): `run_citydreamer.py` (conversion, masked sampling, back-conversion, saving, figures, resumable), `setup_citydreamer.sh`, `README.md`.
+- `evaluation/c2st.py`: new `--collapse_use`.
+- AWS: CityDreamer (commit `b3acc0a`) in `~/genai-final/third_party/CityDreamer`; conda env `citydreamer` (clone of `genai-final` plus easydict).
+- Conversion self-test: exact round trip on the first 20 test windows, on the laptop and on AWS.
+
+**Blocked**: `LayoutGen.pth` is only on the authors' download page, which needs a **browser verification step**; it cannot be fetched by script (Hugging Face has only the 3D rendering weights). Place it at `~/genai-final/checkpoints/citydreamer/LayoutGen.pth` on AWS.
+
+**Next (GPU)**: strict weight loading and encode/decode check, then two windows with figures and timing, then decide on the 1,000 windows.
+
 ---
 
 ## Data audit (Nov 18)

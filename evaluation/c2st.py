@@ -9,6 +9,9 @@ generated blocks cannot be told apart from real ones. Repeated over several rand
   python c2st.py --pred_dir PATH --name liu_baseline     (needs torch: conda env genai)
   python c2st.py --oracle --name oracle                  (fake = real copy, expect ~0.5)
   python c2st.py --shuffle --name shuffle_check          (cells shuffled, expect >> 0.5)
+  python c2st.py --pred_dir PATH --name citydreamer --collapse_use
+      (models without land use: residential and non-residential merged, and street and open
+       merged inside the block, in both real and generated crops)
 """
 import argparse
 import json
@@ -21,6 +24,14 @@ import torch.nn as nn
 import config as C
 from data import City, test_order
 from evaluate import load_gens
+
+
+def collapse_use(c):
+    """Merge non-residential into residential height classes and street into open."""
+    c = c.copy()
+    c[c >= 6] -= 4
+    c[c < 2] = C.OPEN
+    return c
 
 
 def crop(cls_window, inside, size=C.C2ST_SIZE):
@@ -86,6 +97,8 @@ def main():
     ap.add_argument("--name", required=True)
     ap.add_argument("--n", type=int, default=C.N_TEST)
     ap.add_argument("--splits", type=int, default=C.C2ST_SPLITS)
+    ap.add_argument("--collapse_use", action="store_true",
+                    help="merge land uses and street/open in real and generated crops")
     a = ap.parse_args()
 
     city = City()
@@ -108,6 +121,8 @@ def main():
                 fake[m] = rng.permutation(fake[m])
         else:
             fake = cls
+        if a.collapse_use:
+            cls, fake = collapse_use(cls), collapse_use(fake)
         for t in tgts:
             inside = blk == t
             X += [crop(cls, inside), crop(fake, inside)]
@@ -118,7 +133,7 @@ def main():
     accs = [one_split(X, y, unit, s, device) for s in range(a.splits)]
     res = {"acc_mean": float(np.mean(accs)), "acc_min": float(np.min(accs)), "acc_max": float(np.max(accs)),
            "accs": accs, "n_blocks": int(len(np.unique(unit))), "n_crops": int(len(y)), "n_splits": a.splits,
-           "device": device}
+           "device": device, "collapse_use": a.collapse_use}
     out = os.path.join(C.RESULTS_DIR, a.name)
     os.makedirs(out, exist_ok=True)
     json.dump(res, open(os.path.join(out, "c2st.json"), "w"), indent=1)
