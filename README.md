@@ -354,6 +354,39 @@ True centers: 0.31 inside the outline
 - Localization trained for only 1 hour and was still improving. It could train longer, but every model must get the same time; decide with the team before changes 1–3.
 - The midway report shows both results: predicted centers as the official baseline, true centers to show where the bottleneck is.
 
+### Step 6: evaluation code (done Nov 19, on the laptop)
+
+Code in `evaluation/`; definitions and references of every metric in `evaluation/README.md`. All models share it; the input is one `.npz` per test window (`gen`, `gt`, `mask`), the format the baseline already writes.
+
+| Group | Metrics |
+|---|---|
+| Condition | Cov. err., FAR err. (plus median relative error), Height acc. (area-weighted median, empty blocks excluded), Res. err. (floor-area residential share), hit rate; use accuracy in the text only |
+| Surroundings | Boundary (WD of height difference to facing blocks), Street wall (WD of street wall ratio), street wall vs neighbour |
+| Realism | CNN two-sample test on the block alone (`c2st.py`, conda env `genai`), Footprint (WD of four region measures) |
+| Diversity | pairwise cell disagreement of the 4 samples |
+| Statistics | block-cluster bootstrap, paired model comparison (`--compare`) |
+
+**Checks**: all 16 checks of `tests/test_metrics.py` pass (the real map gives 0 / 1; raised heights, removed buildings and shuffled cells move each metric the right way). CNN test: real vs real 0.50, real vs shuffled 0.88.
+
+**Oracle row (real map, first 1,000 test windows, 1,817 target blocks, `evaluation/results/oracle/`)**
+
+| Metric | Value [95% CI] |
+|---|---|
+| FAR err. | 0.131 [0.116, 0.148] (median relative error 9.2%) |
+| Cov. err. | 0.012 [0.011, 0.013] |
+| Height acc. | 0.996 |
+| Res. err. | 0.070 [0.067, 0.074] (use accuracy 96.9%) |
+| Hit rate | **0.56** (even the real map, see below) |
+| Boundary, Street wall, Footprint | 0 |
+| CNN acc. | 0.50 |
+
+**Findings**
+- **The FAR floor is 0.13, not the 0.22 of the data audit**: 0.22 averaged all valid blocks, while the first 1,000 test windows are more low-rise. The oracle row of the midway Table 2 should use the measured values.
+- **A ±10% hit rate is strict for FAR**: even the real map meets it for only 56% of blocks because four height classes are coarse. Either read it against the oracle or relax FAR to ±20%; to decide with the team.
+- Fitted floors per height class: 1.53 / 3.42 / 7.13 / 25.08.
+
+**Next**: start AWS, regenerate the baseline for the first 1,000 test windows (about 40 min), run the evaluation and fill the two Liu rows of Table 2.
+
 ---
 
 ## Data audit (Nov 18)

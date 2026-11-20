@@ -1,0 +1,16 @@
+{
+ "acc_mean": 0.5,
+ "acc_min": 0.5,
+ "acc_max": 0.5,
+ "accs": [
+  0.5,
+  0.5,
+  0.5,
+  0.5,
+  0.5
+ ],
+ "n_blocks": 1817,
+ "n_crops": 4252,
+ "n_splits": 5,
+ "device": "cuda"
+}

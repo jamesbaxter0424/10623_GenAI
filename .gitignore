@@ -38,3 +38,7 @@ Thumbs.db
 
 # Report: separate git repo synced with Overleaf
 /latex/
+
+# Evaluation: cache and large per-row tables stay local (summaries are kept)
+evaluation/cache/
+evaluation/results/*/*.csv
