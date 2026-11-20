@@ -382,7 +382,8 @@ Code in `evaluation/`; definitions and references of every metric in `evaluation
 
 **Findings**
 - **The FAR floor is 0.13, not the 0.22 of the data audit**: 0.22 averaged all valid blocks, while the first 1,000 test windows are more low-rise. The oracle row of the midway Table 2 should use the measured values.
-- **A ±10% hit rate is strict for FAR**: even the real map meets it for only 56% of blocks because four height classes are coarse. Either read it against the oracle or relax FAR to ±20%; to decide with the team.
+- **A ±10% hit rate is strict for FAR**: even the real map meets it for only 56% of blocks because four height classes are coarse. **Decision (Nov 19): keep ±10% and read it against the oracle's 56%.**
+- The oracle row of midway Table 2 now uses the measured values (0.13 / 0.01 / 1.00 / 0.07 / 0 / 0 / 50% / 0), pushed to Overleaf.
 - Fitted floors per height class: 1.53 / 3.42 / 7.13 / 25.08.
 
 **Next**: start AWS, regenerate the baseline for the first 1,000 test windows (about 40 min), run the evaluation and fill the two Liu rows of Table 2.
