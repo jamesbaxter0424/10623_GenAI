@@ -420,6 +420,12 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Midway baseline section (Nov 20)**: Table 1 now shows the 1,000-window metrics that do not fit in Table 2 (FAR relative error, hit rate, use accuracy, street wall vs. neighbour, CNN) with a real-map column, replacing the old 200-sample table. The baseline paragraph explains the under- and over-building and adds a fourth reason the numbers are correct (the evaluation reproduces the oracle); compute is now 16.5 GPU-hours (about $17). Finding: with learned centers target blocks are 16% built (real 42%); with true centers 39%, but street edges are overbuilt (25% vs. 21%), which is why street wall vs. neighbour gets worse. **The text now fills exactly four pages with no slack**, so filling the TODOs needs matching cuts.
 
+**Main baseline is now Liu with true centers (Nov 20)**: block positions and outlines are inputs of our task, and the learned localization is no better than guessing (loss 7.07 vs. ln 1024 = 6.93). The baseline therefore places nodes at their true centers at sampling; the trained model is unchanged (training already used true centers). The release with learned centers stays as a **reference row** ("Liu, as released"), showing the cost of learning a known position and motivating change (2). Consequences:
+- Table 2 rows are "Liu, as released (reference)" and "Liu, true centers (baseline)"; (1)–(3) are **cumulative on the baseline**. Table 1 columns are swapped.
+- **Change (1) samples with true centers and needs no localization head** (about 1 GPU-hour saved per model).
+- Result folders keep their names: `evaluation/results/nyc_baseline_test1000_gtpos` is the baseline, `nyc_baseline_test1000` the reference.
+- The text still fits in four pages.
+
 ---
 
 ## Data audit (Nov 18)
