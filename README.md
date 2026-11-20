@@ -426,6 +426,8 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 - Result folders keep their names: `evaluation/results/nyc_baseline_test1000_gtpos` is the baseline, `nyc_baseline_test1000` the reference.
 - The text still fits in four pages.
 
+**Midway AI-use section shortened (Nov 20)**: James makes the design decisions; the AI implements and suggests, and James reviews before adopting. Checks are (1) reviewing AI proposals (e.g. true centers, dropping Out-Block, a literature basis for each metric) and (2) testing the code (plots on the real map, 8-tile overfit, reproducing the oracle row). The duplicate true-center example was removed from Human work. About two lines of slack.
+
 ---
 
 ## Data audit (Nov 18)
