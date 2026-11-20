@@ -416,7 +416,9 @@ On AWS, the existing checkpoints generated the first 1,000 test windows × 4 sam
 
 The two Liu rows of midway Table 2 are filled and the Baseline results paragraph has a summary sentence, pushed to Overleaf.
 
-**Midway scope (Nov 20)**: the retrieval baseline and the no-GNN ablation are **removed from the midway plan for now** (Table 2, introduction, related work, methods, Q4, timeline). The research questions are Q1–Q3; if short of time, (1) and (3) are trained first. The text now has about nine lines of slack.
+**Midway scope (Nov 20)**: the retrieval baseline and the no-GNN ablation are **removed from the midway plan for now** (Table 2, introduction, related work, methods, Q4, timeline). The research questions are Q1–Q3; if short of time, (1) and (3) are trained first.
+
+**Midway baseline section (Nov 20)**: Table 1 now shows the 1,000-window metrics that do not fit in Table 2 (FAR relative error, hit rate, use accuracy, street wall vs. neighbour, CNN) with a real-map column, replacing the old 200-sample table. The baseline paragraph explains the under- and over-building and adds a fourth reason the numbers are correct (the evaluation reproduces the oracle); compute is now 16.5 GPU-hours (about $17). Finding: with learned centers target blocks are 16% built (real 42%); with true centers 39%, but street edges are overbuilt (25% vs. 21%), which is why street wall vs. neighbour gets worse. **The text now fills exactly four pages with no slack**, so filling the TODOs needs matching cuts.
 
 ---
 
