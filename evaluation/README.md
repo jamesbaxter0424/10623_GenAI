@@ -1,7 +1,7 @@
 # Evaluation
 
 One evaluation for every model we compare (original Liu model, Liu + true centers, changes 1–3,
-no-GNN, retrieval, GlobalMapper). It reads a model's generated maps, scores only the target blocks,
+no-GNN, GlobalMapper). It reads a model's generated maps, scores only the target blocks,
 and writes a per-block table and a summary with 95% confidence intervals.
 
 ## Quick start

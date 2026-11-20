@@ -386,7 +386,35 @@ Code in `evaluation/`; definitions and references of every metric in `evaluation
 - The oracle row of midway Table 2 now uses the measured values (0.13 / 0.01 / 1.00 / 0.07 / 0 / 0 / 50% / 0), pushed to Overleaf.
 - Fitted floors per height class: 1.53 / 3.42 / 7.13 / 25.08.
 
-**Next**: start AWS, regenerate the baseline for the first 1,000 test windows (about 40 min), run the evaluation and fill the two Liu rows of Table 2.
+### Step 7: final evaluation of the baseline on 1,000 test windows (done Nov 20)
+
+On AWS, the existing checkpoints generated the first 1,000 test windows × 4 samples (predicted and true centers, about 31 min each), followed by the evaluation and CNN test (about 17 min). Script `control-3d-scene/scripts/run_eval1000.sh`, log `progress/step7_eval1000.log`, results `evaluation/results/nyc_baseline_test1000*/`. **The instance was stopped afterwards.**
+
+| Metric | Liu (predicted centers) | Liu + true centers | Oracle (real map) |
+|---|---|---|---|
+| FAR err. ↓ | 0.733 [0.697, 0.775] | 0.427 [0.401, 0.458] | 0.131 |
+| FAR median relative error ↓ | 68.5% | 32.1% | 9.2% |
+| Cov. err. ↓ | 0.273 | 0.123 | 0.012 |
+| Height acc. ↑ | 0.725 | 0.845 | 0.996 |
+| Res. err. ↓ | 0.245 | 0.186 | 0.070 |
+| Use accuracy (text only) | 79.8% | 89.2% | 96.9% |
+| Hit rate ↑ | **2.8%** | 10.7% | 56.0% |
+| Boundary ↓ | 0.210 | 0.133 | 0 |
+| Street wall ↓ | 0.106 | 0.073 | 0 |
+| Street wall vs neighbour ↓ | 0.057 | 0.070 | 0 |
+| Footprint ↓ | 0.223 | 0.159 | 0 |
+| Diversity | 0.596 | 0.529 | — |
+| CNN acc. (→ 50%) | **96.4%** (90.9–98.4%) | 86.9% (74.8–98.5%) | 50% |
+
+**Paired comparison** (true − predicted centers, same 1,817 blocks): FAR error −0.31, coverage error −0.15, height accuracy +0.12, residential-share error −0.06, hit rate +0.08; **all intervals exclude 0**.
+
+**Reading**
+- **Targets are almost never met**: only 2.8% of blocks meet FAR and coverage within ±10% with predicted centers, 10.7% with true centers (56% for the real map). The baseline knows classes but not numbers, which change 1 addresses.
+- **Localization is the largest single problem**: every condition metric improves significantly with true centers.
+- **Generated blocks are easy to spot**: the CNN separates them 96% of the time (87% with true centers). The CNN varies a lot across the 5 splits (75–98%); more windows or repeats should stabilise it.
+- Street wall vs neighbour is slightly worse with true centers (0.070 vs 0.057); a small gap, to be revisited with change 3.
+
+The two Liu rows of midway Table 2 are filled and the Baseline results paragraph has a summary sentence, pushed to Overleaf (the text now fills exactly four pages).
 
 ---
 
