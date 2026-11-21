@@ -428,6 +428,8 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Midway AI-use section shortened (Nov 20)**: James makes the design decisions; the AI implements and suggests, and James reviews before adopting. Checks are (1) reviewing AI proposals (e.g. true centers, dropping Out-Block, a literature basis for each metric) and (2) testing the code (plots on the real map, 8-tile overfit, reproducing the oracle row). The duplicate true-center example was removed from Human work. About two lines of slack.
 
+**Midway cuts (Nov 20)**: Chenyue's new GlobalMapper section (table and figure for one block, #1824) and LLM request pilot put the text about one page over. GlobalMapper is now one sentence at the end of Planned experiments (replacing "replication numbers will sit next to the published ones"); the LLM pilot is one sentence in the Requests paragraph; Chenyue's AI use is one sentence; the compute paragraph covers both AWS and Colab; `\linenumbers` removed. `fig/GlobalMapper_Baseline_Generation.png` stays in Overleaf, unused. **Still about six lines over**, and the three TODOs need room, so about twelve more lines must go.
+
 ### Step 8: CityDreamer baseline, preparation (Nov 20, in progress)
 
 **Why**: COHO's code is not released. CityDreamer (CVPR 2024) releases code and weights, generates semantic and height maps (a grid like ours) and **sees the surroundings** when it fills a region, so it is a "context but no targets" baseline. We use the **released weights without training** (zero-shot).
