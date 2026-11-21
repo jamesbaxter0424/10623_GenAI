@@ -460,6 +460,29 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Next (GPU)**: strict weight loading and encode/decode check, then two windows with figures and timing, then decide on the 1,000 windows.
 
+**Later decision (Nov 21)**: the zero-shot model was trained on different data, so it is not a fair comparison; we **retrain CityDreamer from scratch on NYC** instead (the same standard as for GlobalMapper). The zero-shot code stays in `baselines/citydreamer/` but is not pursued; retraining does not need the gated checkpoint.
+
+### Step 9: CityDreamer retrained on NYC (started Nov 21, training)
+
+Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from the zero-shot version. It is the **"context, no targets"** baseline.
+
+**Same as our models**: the Liu baseline's training windows (55,813), our 10-class 4 m maps (no conversion; land use kept, so every column of Table 1 can be filled), the same 1,000 test windows and evaluation, and the **same 12 GPU-hour training budget** (VQGAN 4 h + sampler 8 h).
+
+**Kept from CityDreamer**: model code unmodified; 512-word codebook; sampler 24 x 512, 256 steps; its losses and optimisers (VQGAN: Adam, lr = 4.5e-6 x batch; sampler: Adam 2e-4, 7,500-step warm-up, reweighted ELBO, batch 10); random flips; inference with 32 steps, known tokens fixed and masked tokens filled.
+
+**Changes (to be stated in the report)**: 7 -> 10 input/output channels; 512 -> 128 resolution; channel factors `[1,1,2,2,4]` -> `[2,2,4]` (x4 downsampling, the same 32 x 32 tokens and attention level); no height L1 or smoothness loss (no height channel); VQGAN batch 2 -> 16 (32 did not fit); bf16 autocast (codebook lookup in float32); 1,000 epochs -> 4 + 8 hours.
+
+**Measured on the A10G**: VQGAN 0.76 s/step (batch 16, 19 GB); sampler 0.58 s/step; generation 4.5 s per window (4 samples). The whole pipeline (both stages, unconditional samples, target filling, outside of the targets unchanged) was first run end to end on a small model.
+
+**Full run** (`run_pipeline.sh`, tmux `cdnyc`, started Nov 21 21:32 UTC, about 13 hours):
+1. VQGAN memorises 8 windows, reconstruction >= 0.95 (gate)
+2. VQGAN 4 h; validation reconstruction >= 0.85 (gate; otherwise x2 downsampling)
+3. Sampler memorises 8 windows
+4. Sampler 8 h
+5. Figures on validation windows only: unconditional samples and filled target blocks
+
+Then: 1,000 test windows (about 75 min), evaluation, Table 1.
+
 ---
 
 ## Data audit (Nov 18)
