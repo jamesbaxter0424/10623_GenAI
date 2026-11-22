@@ -27,8 +27,10 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | 3 | Overfit 8 tiles | ✅ Done, passed |
 | 4 | Full training (12 h) + localization post-training (1 h) | ✅ Done |
 | 5 | Test generation (200 samples × 4) + midway figures | ✅ Scores and figures done; midway draft written |
+| 8–9 | CityDreamer: zero-shot prep, then retrained on NYC and evaluated on 1,000 windows | ✅ Done (Nov 22) |
+| — | Final report first draft (`latex/Final Report.tex`, sections follow the final rubric; red `\todo{}` marks what is missing) | ✅ Draft (Nov 22) |
 
-**Results**: `progress/step5_baseline/` (scores and figures). No training is running on AWS.
+**Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`. AWS is shut down.
 
 ---
 
