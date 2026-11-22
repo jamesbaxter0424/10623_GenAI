@@ -30,16 +30,19 @@ def target_tokens(inside, F):
 
 
 @torch.no_grad()
-def inpaint(cfg, vqae, sampler, cls, inside, S, steps, temp, device):
+def inpaint(cfg, vqae, sampler, cls, inside, S, steps, temp, device, recon=False):
     F = cfg.NETWORK.VQGAN.ATTN_RESOLUTION
     MASK = cfg.NETWORK.VQGAN.N_EMBED
     x = torch.from_numpy(cls).to(device).long()[None]
     oh, _ = K.to_input(x)
     idx = K.encode_idx(vqae, oh)                                   # [1, 1024]
-    tok = torch.from_numpy(target_tokens(inside, F)).to(device)
-    xt = idx.repeat(S, 1)
-    xt[:, tok] = MASK
-    out = sampler.sample(S, steps, x_t=xt, temperature=temp, device=device)
+    if recon:   # reference row: real tokens decoded back, no sampling (CityDreamer's ceiling)
+        out = idx.repeat(S, 1)
+    else:
+        tok = torch.from_numpy(target_tokens(inside, F)).to(device)
+        xt = idx.repeat(S, 1)
+        xt[:, tok] = MASK
+        out = sampler.sample(S, steps, x_t=xt, temperature=temp, device=device)
     assert (out != MASK).all()
     gen = K.decode_idx(vqae, cfg, out).argmax(1).cpu().numpy()     # [S, N, N]
     g = np.repeat(cls[None], S, 0)
@@ -59,6 +62,8 @@ def main():
     ap.add_argument("--temp", type=float, default=1.0)
     ap.add_argument("--viz", type=int, default=0)
     ap.add_argument("--uncond", type=int, default=0, help="draw this many unconditional samples and exit")
+    ap.add_argument("--recon", action="store_true",
+                    help="reference row: encode and decode the real map, no sampling")
     a = ap.parse_args()
     device = "cuda"
     os.makedirs(a.out, exist_ok=True)
@@ -98,7 +103,7 @@ def main():
         cls, blk, _, tgts = city.window(sid)
         inside = np.isin(blk, tgts)
         torch.manual_seed(sid)
-        g = inpaint(cfg, vqae, sampler, cls, inside, a.samples, a.steps, a.temp, device)
+        g = inpaint(cfg, vqae, sampler, cls, inside, a.samples, a.steps, a.temp, device, a.recon)
         assert np.array_equal(g[:, ~inside], np.repeat(cls[None], a.samples, 0)[:, ~inside])
         np.savez_compressed(f, gen=g.astype(np.uint8), gt=cls.astype(np.uint8), mask=inside)
         dt = time.time() - t0

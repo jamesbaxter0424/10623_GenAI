@@ -462,7 +462,7 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Later decision (Nov 21)**: the zero-shot model was trained on different data, so it is not a fair comparison; we **retrain CityDreamer from scratch on NYC** instead (the same standard as for GlobalMapper). The zero-shot code stays in `baselines/citydreamer/` but is not pursued; retraining does not need the gated checkpoint.
 
-### Step 9: CityDreamer retrained on NYC (Nov 21–22, trained; test pending)
+### Step 9: CityDreamer retrained on NYC (Nov 21–22, done)
 
 Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from the zero-shot version. It is the **"context, no targets"** baseline.
 
@@ -488,7 +488,22 @@ Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from 
 - Target filling: the surroundings stay unchanged; the filled blocks roughly match the heights and uses around them; the 4 samples differ.
 - Figures and logs in [progress/step9_citydreamer_nyc/](progress/step9_citydreamer_nyc/); checkpoints on AWS in `~/genai-final/checkpoints/citydreamer_nyc/`.
 
-Next (needs AWS restarted): 1,000 test windows (about 75 min), evaluation, Table 1.
+**Test (Nov 22, `run_test.sh`; 1,000 windows x 4 samples, 55 min; AWS shut down after)**. Results in `evaluation/results/citydreamer_nyc_test1000` and `..._recon_test1000`; figures in `progress/step9_citydreamer_nyc/test_viz/`.
+
+| Metric | Liu, true centers | CityDreamer (NYC) | VQGAN recon. (ceiling) |
+|---|---|---|---|
+| FAR rel. err. (median) | **.321** | .402 | .113 |
+| Cov. err. | **.123** | .151 | .021 |
+| Height acc. | **.845** | .738 | .984 |
+| Use acc. | **.892** | .812 | .965 |
+| Hit rate | **.107** | .068 | .467 |
+| Boundary (WD) | .133 | **.092** | .021 |
+| Street wall vs neighbour | .070 | **.029** | .002 |
+| Footprint (WD) | .159 | **.126** | .087 |
+| Diversity | .529 | .570 | 0 |
+| CNN acc. | 87% | 94% | 93% |
+
+Reading: seeing the surroundings helps **continuity with the neighbours** (street wall, boundary, footprint), but without the targets CityDreamer **misses the requested density** (worse FAR, coverage, height, use than Liu). The CNN test is not usable for this model: even the reconstruction of the real map is detected 93% of the time, so the CNN picks up the VQGAN decoder's texture, not the layout.
 
 ---
 
