@@ -1,0 +1,5 @@
+{"args": {"ckpt": "/home/ubuntu/genai-final/checkpoints/citydreamer_nyc/sampler/latest.pth", "out": "/home/ubuntu/genai-final/generated/citydreamer_nyc_dev/val", "split": "val", "n": 4, "sids": "", "samples": 4, "steps": 32, "temp": 1.0, "viz": 4, "uncond": 0}, "ckpt_step": 49406}
+{"sid": 6703, "sec": 4.49}
+{"sid": 74126, "sec": 3.36}
+{"sid": 1426, "sec": 3.36}
+{"sid": 6753, "sec": 3.34}

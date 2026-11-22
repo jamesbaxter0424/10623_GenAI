@@ -462,7 +462,7 @@ The two Liu rows of midway Table 2 are filled and the Baseline results paragraph
 
 **Later decision (Nov 21)**: the zero-shot model was trained on different data, so it is not a fair comparison; we **retrain CityDreamer from scratch on NYC** instead (the same standard as for GlobalMapper). The zero-shot code stays in `baselines/citydreamer/` but is not pursued; retraining does not need the gated checkpoint.
 
-### Step 9: CityDreamer retrained on NYC (started Nov 21, training)
+### Step 9: CityDreamer retrained on NYC (Nov 21–22, trained; test pending)
 
 Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from the zero-shot version. It is the **"context, no targets"** baseline.
 
@@ -481,7 +481,14 @@ Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from 
 4. Sampler 8 h
 5. Figures on validation windows only: unconditional samples and filled target blocks
 
-Then: 1,000 test windows (about 75 min), evaluation, Table 1.
+**Result (finished Nov 22 10:07 UTC, no errors; AWS shut down)**:
+- Gate 1: reconstruction 1.00; gate 2: validation reconstruction **91.8%** (building cells 89.1%), passed.
+- Sampler 8 h, 49,406 steps; validation rw_elbo 0.815 -> **0.669**, still falling slowly at the end.
+- Unconditional samples: **streets form a curved network, not NYC's grid**; building class proportions look plausible.
+- Target filling: the surroundings stay unchanged; the filled blocks roughly match the heights and uses around them; the 4 samples differ.
+- Figures and logs in [progress/step9_citydreamer_nyc/](progress/step9_citydreamer_nyc/); checkpoints on AWS in `~/genai-final/checkpoints/citydreamer_nyc/`.
+
+Next (needs AWS restarted): 1,000 test windows (about 75 min), evaluation, Table 1.
 
 ---
 

@@ -1,0 +1,190 @@
+{"step": 100, "hours": 0.021, "seg": 1.0872, "quant": 86.93}
+{"step": 200, "hours": 0.042, "seg": 1.0835, "quant": 93.05307}
+{"step": 300, "hours": 0.062, "seg": 0.7658, "quant": 60.00963}
+{"step": 400, "hours": 0.083, "seg": 0.8022, "quant": 33.7059}
+{"step": 500, "hours": 0.104, "seg": 0.6542, "quant": 7.96774}
+{"step": 600, "hours": 0.125, "seg": 0.6508, "quant": 12.63811}
+{"step": 700, "hours": 0.146, "seg": 0.6949, "quant": 12.74294}
+{"step": 800, "hours": 0.166, "seg": 0.734, "quant": 10.45314}
+{"step": 900, "hours": 0.187, "seg": 0.5576, "quant": 8.17644}
+{"step": 1000, "hours": 0.208, "seg": 0.4892, "quant": 3.83952, "val_acc": 0.7239, "val_building_acc": 0.4195}
+{"step": 1100, "hours": 0.231, "seg": 0.5613, "quant": 7.50399}
+{"step": 1200, "hours": 0.252, "seg": 0.4833, "quant": 6.75286}
+{"step": 1300, "hours": 0.273, "seg": 0.489, "quant": 7.84285}
+{"step": 1400, "hours": 0.294, "seg": 0.4372, "quant": 4.53306}
+{"step": 1500, "hours": 0.314, "seg": 0.4673, "quant": 8.82444}
+{"step": 1600, "hours": 0.335, "seg": 0.448, "quant": 6.53306}
+{"step": 1700, "hours": 0.356, "seg": 0.4425, "quant": 2.95642}
+{"step": 1800, "hours": 0.377, "seg": 0.5046, "quant": 4.25449}
+{"step": 1900, "hours": 0.398, "seg": 0.4615, "quant": 3.54986}
+{"step": 2000, "hours": 0.418, "seg": 0.4353, "quant": 2.11809, "val_acc": 0.8046, "val_building_acc": 0.724}
+{"step": 2100, "hours": 0.443, "seg": 0.4958, "quant": 3.60691}
+{"step": 2200, "hours": 0.464, "seg": 0.4509, "quant": 2.67159}
+{"step": 2300, "hours": 0.485, "seg": 0.4077, "quant": 3.2355}
+{"step": 2400, "hours": 0.505, "seg": 0.4397, "quant": 3.72847}
+{"step": 2500, "hours": 0.526, "seg": 0.4446, "quant": 1.88921}
+{"step": 2600, "hours": 0.547, "seg": 0.3777, "quant": 1.36513}
+{"step": 2700, "hours": 0.568, "seg": 0.4113, "quant": 1.85497}
+{"step": 2800, "hours": 0.589, "seg": 0.379, "quant": 1.40625}
+{"step": 2900, "hours": 0.609, "seg": 0.4463, "quant": 1.61171}
+{"step": 3000, "hours": 0.63, "seg": 0.4013, "quant": 1.25205, "val_acc": 0.8244, "val_building_acc": 0.7107}
+{"step": 3100, "hours": 0.655, "seg": 0.436, "quant": 1.38284}
+{"step": 3200, "hours": 0.676, "seg": 0.4082, "quant": 1.39424}
+{"step": 3300, "hours": 0.696, "seg": 0.4194, "quant": 1.1551}
+{"step": 3400, "hours": 0.717, "seg": 0.3731, "quant": 0.68839}
+{"step": 3500, "hours": 0.738, "seg": 0.381, "quant": 0.99878}
+{"step": 3600, "hours": 0.759, "seg": 0.3778, "quant": 1.06034}
+{"step": 3700, "hours": 0.78, "seg": 0.349, "quant": 0.83543}
+{"step": 3800, "hours": 0.8, "seg": 0.3755, "quant": 0.878}
+{"step": 3900, "hours": 0.821, "seg": 0.3403, "quant": 0.77678}
+{"step": 4000, "hours": 0.842, "seg": 0.3603, "quant": 0.89787, "val_acc": 0.8389, "val_building_acc": 0.7703}
+{"step": 4100, "hours": 0.867, "seg": 0.4041, "quant": 1.01736}
+{"step": 4200, "hours": 0.887, "seg": 0.3731, "quant": 0.88695}
+{"step": 4300, "hours": 0.908, "seg": 0.4054, "quant": 1.75435}
+{"step": 4400, "hours": 0.929, "seg": 0.3505, "quant": 0.81731}
+{"step": 4500, "hours": 0.95, "seg": 0.3646, "quant": 0.82165}
+{"step": 4600, "hours": 0.971, "seg": 0.3583, "quant": 0.6922}
+{"step": 4700, "hours": 0.991, "seg": 0.3859, "quant": 0.94471}
+{"step": 4800, "hours": 1.012, "seg": 0.3279, "quant": 0.96043}
+{"step": 4900, "hours": 1.033, "seg": 0.4168, "quant": 1.35008}
+{"step": 5000, "hours": 1.054, "seg": 0.3539, "quant": 1.567, "val_acc": 0.8496, "val_building_acc": 0.7746}
+{"step": 5100, "hours": 1.078, "seg": 0.3409, "quant": 0.92215}
+{"step": 5200, "hours": 1.099, "seg": 0.347, "quant": 1.18988}
+{"step": 5300, "hours": 1.12, "seg": 0.3502, "quant": 1.21996}
+{"step": 5400, "hours": 1.141, "seg": 0.3182, "quant": 0.71788}
+{"step": 5500, "hours": 1.161, "seg": 0.3306, "quant": 0.87361}
+{"step": 5600, "hours": 1.182, "seg": 0.3432, "quant": 1.19331}
+{"step": 5700, "hours": 1.203, "seg": 0.3233, "quant": 1.20647}
+{"step": 5800, "hours": 1.224, "seg": 0.3052, "quant": 0.89912}
+{"step": 5900, "hours": 1.245, "seg": 0.344, "quant": 1.3508}
+{"step": 6000, "hours": 1.265, "seg": 0.2741, "quant": 0.90635, "val_acc": 0.8692, "val_building_acc": 0.8286}
+{"step": 6100, "hours": 1.29, "seg": 0.2958, "quant": 0.73676}
+{"step": 6200, "hours": 1.311, "seg": 0.3294, "quant": 0.94381}
+{"step": 6300, "hours": 1.332, "seg": 0.3053, "quant": 0.89793}
+{"step": 6400, "hours": 1.352, "seg": 0.3313, "quant": 0.9053}
+{"step": 6500, "hours": 1.373, "seg": 0.3205, "quant": 0.76349}
+{"step": 6600, "hours": 1.394, "seg": 0.2991, "quant": 0.68325}
+{"step": 6700, "hours": 1.415, "seg": 0.3279, "quant": 0.70585}
+{"step": 6800, "hours": 1.436, "seg": 0.2885, "quant": 0.81412}
+{"step": 6900, "hours": 1.456, "seg": 0.3135, "quant": 0.88935}
+{"step": 7000, "hours": 1.477, "seg": 0.3185, "quant": 0.73316, "val_acc": 0.8725, "val_building_acc": 0.8367}
+{"step": 7100, "hours": 1.502, "seg": 0.286, "quant": 0.73411}
+{"step": 7200, "hours": 1.523, "seg": 0.2903, "quant": 0.8188}
+{"step": 7300, "hours": 1.543, "seg": 0.2844, "quant": 0.60995}
+{"step": 7400, "hours": 1.564, "seg": 0.2766, "quant": 0.80423}
+{"step": 7500, "hours": 1.585, "seg": 0.3048, "quant": 0.89205}
+{"step": 7600, "hours": 1.606, "seg": 0.2994, "quant": 0.78639}
+{"step": 7700, "hours": 1.627, "seg": 0.2655, "quant": 1.04779}
+{"step": 7800, "hours": 1.647, "seg": 0.282, "quant": 0.8036}
+{"step": 7900, "hours": 1.668, "seg": 0.3153, "quant": 0.89112}
+{"step": 8000, "hours": 1.689, "seg": 0.2489, "quant": 0.49976, "val_acc": 0.8828, "val_building_acc": 0.8285}
+{"step": 8100, "hours": 1.714, "seg": 0.2895, "quant": 0.71955}
+{"step": 8200, "hours": 1.734, "seg": 0.2643, "quant": 0.80824}
+{"step": 8300, "hours": 1.755, "seg": 0.2734, "quant": 0.62934}
+{"step": 8400, "hours": 1.776, "seg": 0.2579, "quant": 0.70682}
+{"step": 8500, "hours": 1.797, "seg": 0.2561, "quant": 0.82116}
+{"step": 8600, "hours": 1.818, "seg": 0.2784, "quant": 0.98294}
+{"step": 8700, "hours": 1.838, "seg": 0.2726, "quant": 0.7913}
+{"step": 8800, "hours": 1.859, "seg": 0.2527, "quant": 0.79207}
+{"step": 8900, "hours": 1.88, "seg": 0.2755, "quant": 0.76666}
+{"step": 9000, "hours": 1.901, "seg": 0.2548, "quant": 0.78394, "val_acc": 0.8857, "val_building_acc": 0.8222}
+{"step": 9100, "hours": 1.925, "seg": 0.2435, "quant": 0.60924}
+{"step": 9200, "hours": 1.946, "seg": 0.2304, "quant": 0.63828}
+{"step": 9300, "hours": 1.967, "seg": 0.2455, "quant": 0.53142}
+{"step": 9400, "hours": 1.988, "seg": 0.2526, "quant": 0.76969}
+{"step": 9500, "hours": 2.009, "seg": 0.248, "quant": 0.55428}
+{"step": 9600, "hours": 2.029, "seg": 0.2478, "quant": 0.94487}
+{"step": 9700, "hours": 2.05, "seg": 0.2395, "quant": 0.61775}
+{"step": 9800, "hours": 2.071, "seg": 0.2538, "quant": 0.57312}
+{"step": 9900, "hours": 2.092, "seg": 0.2395, "quant": 0.78852}
+{"step": 10000, "hours": 2.112, "seg": 0.2163, "quant": 0.59019, "val_acc": 0.8915, "val_building_acc": 0.8592}
+{"step": 10100, "hours": 2.137, "seg": 0.244, "quant": 0.60201}
+{"step": 10200, "hours": 2.158, "seg": 0.2384, "quant": 0.48386}
+{"step": 10300, "hours": 2.179, "seg": 0.263, "quant": 0.7622}
+{"step": 10400, "hours": 2.199, "seg": 0.2788, "quant": 0.83906}
+{"step": 10500, "hours": 2.22, "seg": 0.2673, "quant": 0.65778}
+{"step": 10600, "hours": 2.241, "seg": 0.2501, "quant": 0.54816}
+{"step": 10700, "hours": 2.262, "seg": 0.2369, "quant": 0.61832}
+{"step": 10800, "hours": 2.283, "seg": 0.2207, "quant": 0.52286}
+{"step": 10900, "hours": 2.303, "seg": 0.217, "quant": 0.49572}
+{"step": 11000, "hours": 2.324, "seg": 0.2231, "quant": 0.50608, "val_acc": 0.8957, "val_building_acc": 0.8655}
+{"step": 11100, "hours": 2.349, "seg": 0.2395, "quant": 0.49663}
+{"step": 11200, "hours": 2.37, "seg": 0.2396, "quant": 0.54086}
+{"step": 11300, "hours": 2.39, "seg": 0.2404, "quant": 0.50381}
+{"step": 11400, "hours": 2.411, "seg": 0.2236, "quant": 0.56686}
+{"step": 11500, "hours": 2.432, "seg": 0.2411, "quant": 0.58607}
+{"step": 11600, "hours": 2.453, "seg": 0.2196, "quant": 0.45159}
+{"step": 11700, "hours": 2.474, "seg": 0.2296, "quant": 0.44541}
+{"step": 11800, "hours": 2.494, "seg": 0.2259, "quant": 0.50455}
+{"step": 11900, "hours": 2.515, "seg": 0.2292, "quant": 0.54227}
+{"step": 12000, "hours": 2.536, "seg": 0.2462, "quant": 0.56423, "val_acc": 0.8999, "val_building_acc": 0.8734}
+{"step": 12100, "hours": 2.561, "seg": 0.2186, "quant": 0.45138}
+{"step": 12200, "hours": 2.581, "seg": 0.235, "quant": 0.53387}
+{"step": 12300, "hours": 2.602, "seg": 0.2152, "quant": 0.4373}
+{"step": 12400, "hours": 2.623, "seg": 0.2174, "quant": 0.36758}
+{"step": 12500, "hours": 2.644, "seg": 0.2425, "quant": 0.60382}
+{"step": 12600, "hours": 2.665, "seg": 0.2116, "quant": 0.4431}
+{"step": 12700, "hours": 2.685, "seg": 0.222, "quant": 0.49809}
+{"step": 12800, "hours": 2.706, "seg": 0.2202, "quant": 0.44845}
+{"step": 12900, "hours": 2.727, "seg": 0.2665, "quant": 0.53345}
+{"step": 13000, "hours": 2.748, "seg": 0.2269, "quant": 0.46267, "val_acc": 0.9045, "val_building_acc": 0.8499}
+{"step": 13100, "hours": 2.772, "seg": 0.2019, "quant": 0.48843}
+{"step": 13200, "hours": 2.793, "seg": 0.218, "quant": 0.40827}
+{"step": 13300, "hours": 2.814, "seg": 0.2361, "quant": 0.56633}
+{"step": 13400, "hours": 2.835, "seg": 0.2285, "quant": 0.47347}
+{"step": 13500, "hours": 2.856, "seg": 0.2132, "quant": 0.35087}
+{"step": 13600, "hours": 2.876, "seg": 0.2354, "quant": 0.50274}
+{"step": 13700, "hours": 2.897, "seg": 0.1938, "quant": 0.34459}
+{"step": 13800, "hours": 2.918, "seg": 0.1971, "quant": 0.43099}
+{"step": 13900, "hours": 2.939, "seg": 0.2141, "quant": 0.466}
+{"step": 14000, "hours": 2.959, "seg": 0.1863, "quant": 0.36644, "val_acc": 0.9075, "val_building_acc": 0.8714}
+{"step": 14100, "hours": 2.984, "seg": 0.1991, "quant": 0.34784}
+{"step": 14200, "hours": 3.005, "seg": 0.2125, "quant": 0.36695}
+{"step": 14300, "hours": 3.026, "seg": 0.2341, "quant": 0.48343}
+{"step": 14400, "hours": 3.047, "seg": 0.1983, "quant": 0.48931}
+{"step": 14500, "hours": 3.067, "seg": 0.2036, "quant": 0.40928}
+{"step": 14600, "hours": 3.088, "seg": 0.2336, "quant": 0.53866}
+{"step": 14700, "hours": 3.109, "seg": 0.2088, "quant": 0.4348}
+{"step": 14800, "hours": 3.13, "seg": 0.2193, "quant": 0.42909}
+{"step": 14900, "hours": 3.15, "seg": 0.1668, "quant": 0.31546}
+{"step": 15000, "hours": 3.171, "seg": 0.1825, "quant": 0.38611, "val_acc": 0.9088, "val_building_acc": 0.8786}
+{"step": 15100, "hours": 3.196, "seg": 0.2083, "quant": 0.38486}
+{"step": 15200, "hours": 3.217, "seg": 0.2189, "quant": 0.49459}
+{"step": 15300, "hours": 3.238, "seg": 0.1991, "quant": 0.39531}
+{"step": 15400, "hours": 3.258, "seg": 0.1989, "quant": 0.44705}
+{"step": 15500, "hours": 3.279, "seg": 0.2119, "quant": 0.43902}
+{"step": 15600, "hours": 3.3, "seg": 0.2028, "quant": 0.37274}
+{"step": 15700, "hours": 3.321, "seg": 0.229, "quant": 0.41602}
+{"step": 15800, "hours": 3.341, "seg": 0.2112, "quant": 0.44128}
+{"step": 15900, "hours": 3.362, "seg": 0.1863, "quant": 0.34489}
+{"step": 16000, "hours": 3.383, "seg": 0.2031, "quant": 0.43648, "val_acc": 0.912, "val_building_acc": 0.8775}
+{"step": 16100, "hours": 3.408, "seg": 0.2178, "quant": 0.46263}
+{"step": 16200, "hours": 3.428, "seg": 0.2012, "quant": 0.39685}
+{"step": 16300, "hours": 3.449, "seg": 0.2087, "quant": 0.47187}
+{"step": 16400, "hours": 3.47, "seg": 0.1831, "quant": 0.36381}
+{"step": 16500, "hours": 3.491, "seg": 0.1771, "quant": 0.3422}
+{"step": 16600, "hours": 3.512, "seg": 0.192, "quant": 0.3353}
+{"step": 16700, "hours": 3.532, "seg": 0.2044, "quant": 0.4967}
+{"step": 16800, "hours": 3.553, "seg": 0.1984, "quant": 0.36657}
+{"step": 16900, "hours": 3.574, "seg": 0.1816, "quant": 0.41672}
+{"step": 17000, "hours": 3.595, "seg": 0.1966, "quant": 0.38819, "val_acc": 0.9134, "val_building_acc": 0.8732}
+{"step": 17100, "hours": 3.619, "seg": 0.1764, "quant": 0.3524}
+{"step": 17200, "hours": 3.64, "seg": 0.2009, "quant": 0.43787}
+{"step": 17300, "hours": 3.661, "seg": 0.1871, "quant": 0.32411}
+{"step": 17400, "hours": 3.682, "seg": 0.1968, "quant": 0.43051}
+{"step": 17500, "hours": 3.703, "seg": 0.1967, "quant": 0.42122}
+{"step": 17600, "hours": 3.723, "seg": 0.1841, "quant": 0.3467}
+{"step": 17700, "hours": 3.744, "seg": 0.1973, "quant": 0.40282}
+{"step": 17800, "hours": 3.765, "seg": 0.1904, "quant": 0.35807}
+{"step": 17900, "hours": 3.786, "seg": 0.2199, "quant": 0.40786}
+{"step": 18000, "hours": 3.806, "seg": 0.1859, "quant": 0.35495, "val_acc": 0.915, "val_building_acc": 0.8573}
+{"step": 18100, "hours": 3.831, "seg": 0.1775, "quant": 0.35317}
+{"step": 18200, "hours": 3.852, "seg": 0.1797, "quant": 0.36447}
+{"step": 18300, "hours": 3.873, "seg": 0.1838, "quant": 0.38108}
+{"step": 18400, "hours": 3.894, "seg": 0.1572, "quant": 0.26822}
+{"step": 18500, "hours": 3.914, "seg": 0.1999, "quant": 0.39386}
+{"step": 18600, "hours": 3.935, "seg": 0.1766, "quant": 0.36694}
+{"step": 18700, "hours": 3.956, "seg": 0.2233, "quant": 0.40805}
+{"step": 18800, "hours": 3.977, "seg": 0.166, "quant": 0.32396}
+{"step": 18900, "hours": 3.997, "seg": 0.1744, "quant": 0.34988}
+{"step": 18913, "hours": 4.0, "seg": 0.1944, "quant": 0.34777, "val_acc": 0.9176, "val_building_acc": 0.8913}
