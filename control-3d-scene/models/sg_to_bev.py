@@ -11,7 +11,7 @@ class SGtoBEV(nn.Module):
     def __init__(self, num_classes=11, in_channels=34, hidden_channels=32, heads=4,
                  bev_size=64, num_timesteps=100, auxiliary_loss_weight=1e-4,
                  recon_loss_weight=0.2, seg_loss_weight=0.2,
-                 uncond_prob=0.1, gumbel_tau=2.0, overlap_move=5):
+                 uncond_prob=0.1, gumbel_tau=2.0, overlap_move=5, edge_dim=None):
         super().__init__()
         self.bev_size = bev_size
         self.hidden_channels = hidden_channels
@@ -21,7 +21,7 @@ class SGtoBEV(nn.Module):
         self.gumbel_tau = gumbel_tau
         self.overlap_move = overlap_move
 
-        self.gnn = SceneGraphGNN(in_channels, hidden_channels, heads, num_classes, bev_size)
+        self.gnn = SceneGraphGNN(in_channels, hidden_channels, heads, num_classes, bev_size, edge_dim)
         denoise = Denoise(num_classes, cond_channels=hidden_channels,
                           up_height_pooling=False)
         self.diffusion = ConditionalDiffusion(denoise, num_classes, num_timesteps,

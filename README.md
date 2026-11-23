@@ -28,9 +28,10 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | 4 | Full training (12 h) + localization post-training (1 h) | ✅ Done |
 | 5 | Test generation (200 samples × 4) + midway figures | ✅ Scores and figures done; midway draft written |
 | 8–9 | CityDreamer: zero-shot prep, then retrained on NYC and evaluated on 1,000 windows | ✅ Done (Nov 22) |
+| 10 | Change (1): numeric node attributes + street-facing graph; trained 12 h, tested on 1,000 windows, overfitting check on 1,000 training windows | ✅ Done (Nov 23) |
 | — | Final report first draft (`latex/Final Report.tex`, sections follow the final rubric; red `\todo{}` marks what is missing) | ✅ Draft (Nov 22) |
 
-**Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`. AWS is shut down.
+**Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`, `progress/step10_change1/`. AWS is shut down.
 
 ---
 
@@ -506,6 +507,50 @@ Code in [baselines/citydreamer_nyc/](baselines/citydreamer_nyc/), separate from 
 | CNN acc. | 87% | 94% | 93% |
 
 Reading: seeing the surroundings helps **continuity with the neighbours** (street wall, boundary, footprint), but without the targets CityDreamer **misses the requested density** (worse FAR, coverage, height, use than Liu). The CNN test is not usable for this model: even the reconstruction of the real map is detected 93% of the time, so the CNN picks up the VQGAN decoder's texture, not the layout.
+
+### Step 10: change (1), numeric node attributes + street-facing graph (Nov 22–23, done)
+
+**What changes** (on top of the true-center baseline, everything else identical): each node gets 6 numbers after the 27 baseline features (coverage, log1p FAR, log1p(median floors)/2, residential share, log10(area)/5, an "unreliable" flag; invalid blocks are zeroed and flagged), and the 4-nearest-neighbour edges are replaced by **street-facing edges** from `edges.parquet` with 2 edge features (facing length / 100 m, capped at 500 m; street width / 30 m). GATConv uses `edge_dim=2`. Loss, optimiser, 12 h budget, condition dropout and position masking are unchanged. Code: `datasets/nyc_dataset.py` (`numeric=True, graph="street"`), `models/gnn.py`, `configs/nyc_train_c1.yaml`, `configs/nyc_infer_c1.yaml`, `scripts/run_change1.sh`; pre-training check `tools/nyc_c1_check.py` (baseline input unchanged; no NaN; 5.7% of nodes flagged unreliable; median edges per window 57 kNN vs 42 street; 22 of 48,439 nodes without a street edge).
+
+**Run** (`run_change1.sh`, tmux `c1`, Nov 22 21:26 – Nov 23 10:17 UTC): overfit gate cell accuracy 0.999; 12 h training, 55 epochs; test generation 31 min; evaluation 10 min.
+
+**Training loss** (diffusion term, epoch mean): below the baseline at every epoch, by about 0.05 early and 0.035 late; final 4.170 vs 4.204. Both curves were still falling slowly (about 0.01 per hour) when the 12 h budget ended.
+
+**Test, 1,000 windows x 4 samples, true centers** (`evaluation/results/nyc_c1_test1000`):
+
+| Metric | Baseline (true centers) | Change (1) | Paired difference (95% CI) |
+|---|---|---|---|
+| FAR err. (mean) | .427 | **.393** | -.035 [-.050, -.018] significant |
+| FAR rel. err. (median) | .321 | **.282** | |
+| Cov. err. | .123 | **.108** | -.015 [-.018, -.012] significant |
+| Height acc. | .845 | .852 | +.008 [-.004, +.019] n.s. |
+| Res. err. | .186 | **.178** | -.009 [-.015, -.002] significant |
+| Use acc. | .892 | .901 | |
+| Hit rate | .107 | .114 | +.007 [-.003, +.017] n.s. |
+| Boundary (WD) | .133 | .140 | |
+| Street wall vs neighbour | .070 | **.058** | |
+| Footprint (WD) | .159 | **.092** | |
+| Diversity | .529 | .495 | |
+| CNN acc. (-> 0.5) | .869 [.748, .985] | .951 [.926, .965] | |
+
+**By target height class** (median FAR rel. err. / height acc.; n = target blocks over 4 samples):
+
+| Class | n | Baseline | Change (1) |
+|---|---|---|---|
+| 1–2 floors | 1,636 | .309 / .898 | **.262 / .925** |
+| 3–5 floors | 338 | .340 / .672 | **.318** / .623 |
+| 6–12 floors | 78 | **.345 / .535** | .418 / .388 |
+| 13+ floors | 9 | .449 / .250 | .598 / .306 |
+
+Reading:
+- The numbers help where they were expected to: **FAR, coverage and residential share are significantly better**, mostly in low-rise blocks (77% of targets). Height accuracy and hit rate did not change significantly.
+- **Footprint shapes and street wall vs neighbour improved** although the change adds no map information; the facing edges and the density numbers seem to place buildings more realistically.
+- **Tall blocks got worse** (6–12 floors: height acc. .535 -> .388). Only 78 block-samples (about 20 blocks), so this is uncertain, but the direction matters for Manhattan-type blocks.
+- **The CNN separates change (1) from real maps more easily** (95% vs 87%; the baseline's interval is wide). Not explained yet; diversity also fell slightly.
+
+**Overfitting check** (`run_c1_traineval.sh`, 1,000 training windows, same ordering rule as the test set, 40 min; `evaluation/results/nyc_c1_train1000`): within each height class the training windows score only slightly better than the test windows (median FAR rel. err. 1–2 floors .244 vs .262; 3–5 floors .298 vs .318; 6–12 floors .428 vs .418). Overall numbers differ more because the training sample has more tall blocks (10% vs 4% of targets at 6+ floors), so they are not comparable directly. **No sign of strong overfitting.** `evaluate.py` gained a `--split` option (default `test`) for this check.
+
+Results, logs and 24 test figures in [progress/step10_change1/](progress/step10_change1/). AWS shut down Nov 23 10:58 UTC.
 
 ---
 

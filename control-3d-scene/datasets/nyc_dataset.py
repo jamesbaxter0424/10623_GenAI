@@ -16,6 +16,14 @@ Reads data/processed/city/ from the nyc-massing-data pipeline. Each item is one
              the dataset is change 1 and is NOT used here.
   NOT given: numeric targets (coverage, FAR, ...), block polygons, map context.
 
+Change 1 (numeric=True, graph="street"; configs/nyc_train_c1.yaml):
+  node feature x (33) = the 27 above + 6 numbers (see numeric_features):
+      coverage, log(1+FAR), log(1+median floors)/2, residential share, log10(area m2)/5,
+      unreliable flag. True values for context blocks, the target table for targets
+      (true table in training). Blocks failing the dataset checks get zeros and flag 1.
+  edges    = blocks facing each other across a street (edges.parquet of the dataset),
+             edge_attr (2) = facing length / 100 m (capped at 5), street width / 30 m.
+
   bev  = class map of the whole window (target of the 2D diffusion)
   mask = cells of the 1-4 target blocks (only used for evaluation)
 """
@@ -54,6 +62,36 @@ def position_patch(r, c):
     return feat
 
 
+NUM_NUMERIC = 6
+
+
+def numeric_features(blk):
+    """Change 1: six numbers per block, scaled to about 0-1 (see module docstring)."""
+    valid = blk["valid"].to_numpy().astype(bool)
+    f = np.stack([
+        blk["coverage"].to_numpy(),
+        np.log1p(blk["far_fp"].to_numpy()),
+        np.log1p(blk["median_floors"].to_numpy()) / 2,
+        blk["res_share"].to_numpy(),
+        np.log10(np.maximum(blk["area_m2"].to_numpy(), 1.0)) / 5,
+        np.zeros(len(blk)),
+    ], 1).astype(np.float32)
+    f = np.nan_to_num(f)
+    f[~valid] = 0.0
+    f[~valid, -1] = 1.0
+    return f
+
+
+def street_edges(e_i, e_j, e_attr, nodes):
+    """Change 1: street-facing edges among the window's nodes, both directions."""
+    sel = np.isin(e_i, nodes) & np.isin(e_j, nodes)
+    i = np.searchsorted(nodes, e_i[sel])
+    j = np.searchsorted(nodes, e_j[sel])
+    ei = np.concatenate([np.stack([i, j]), np.stack([j, i])], 1).astype(np.int64)
+    ea = np.concatenate([e_attr[sel], e_attr[sel]], 0).astype(np.float32)
+    return ei, ea
+
+
 def knn_edges(cent, k):
     """Symmetric k-nearest-neighbour edges between node centroids, both directions."""
     n = len(cent)
@@ -71,9 +109,11 @@ def knn_edges(cent, k):
 class NYCSceneGraphDataset(Dataset):
     def __init__(self, root, split="train", knn=4, feature_mask_ratio=0.0,
                  exclude_ctx_leak=True, sample_ids=None, max_samples=None, repeat=1,
-                 min_visible_cells=0):
+                 min_visible_cells=0, numeric=False, graph="knn"):
         self.root = root
         self.knn = knn
+        self.numeric = numeric
+        self.graph = graph
         self.min_visible_cells = min_visible_cells
         self.feature_mask_ratio = feature_mask_ratio
         self.repeat = repeat
@@ -82,6 +122,18 @@ class NYCSceneGraphDataset(Dataset):
         blk = pd.read_parquet(os.path.join(root, "blocks.parquet"),
                               columns=["block_id", "hclass", "is_res"])
         self.label = block_labels(blk)
+        if numeric:
+            num = pd.read_parquet(os.path.join(root, "blocks.parquet"),
+                                  columns=["coverage", "far_fp", "median_floors", "res_share",
+                                           "area_m2", "valid"])
+            self.num = numeric_features(num)
+        if graph == "street":
+            e = pd.read_parquet(os.path.join(root, "edges.parquet"))
+            self.e_i, self.e_j = e["i"].to_numpy(), e["j"].to_numpy()
+            self.e_attr = np.stack([np.minimum(e["shared_m"].to_numpy(), 500.0) / 100.0,
+                                    e["street_m"].to_numpy() / 30.0], 1).astype(np.float32)
+        elif graph != "knn":
+            raise ValueError(f"unknown graph {graph}")
 
         s = pd.read_parquet(os.path.join(root, "samples.parquet"))
         s = s[s["split"] == split]
@@ -124,7 +176,10 @@ class NYCSceneGraphDataset(Dataset):
             pos = position_patch(r, c)
             if self.feature_mask_ratio > 0 and np.random.rand() < self.feature_mask_ratio:
                 pos = np.zeros_like(pos)
-            feats.append(np.concatenate([np.eye(NUM_CLASSES, dtype=np.float32)[labels[i]], pos]))
+            parts = [np.eye(NUM_CLASSES, dtype=np.float32)[labels[i]], pos]
+            if self.numeric:
+                parts.append(self.num[nodes[i]])
+            feats.append(np.concatenate(parts))
             heat[i, min(N - 1, int(r)), min(N - 1, int(c))] = 1.0
         return nodes, cent, labels, np.stack(feats), heat
 
@@ -132,10 +187,16 @@ class NYCSceneGraphDataset(Dataset):
         r, cls, blk = self.window(idx)
         targets = np.asarray(r["targets"], dtype=np.int64)
         nodes, cent, labels, feats, heat = self.build_graph(blk, targets)
+        extra = {}
+        if self.graph == "street":
+            ei, ea = street_edges(self.e_i, self.e_j, self.e_attr, nodes)
+            extra["edge_attr"] = torch.from_numpy(ea)
+        else:
+            ei = knn_edges(cent, self.knn)
         sg = Data(x=torch.from_numpy(feats),
-                  edge_index=torch.from_numpy(knn_edges(cent, self.knn)),
+                  edge_index=torch.from_numpy(ei),
                   y=torch.from_numpy(labels),
-                  heatmaps=torch.from_numpy(heat))
+                  heatmaps=torch.from_numpy(heat), **extra)
         return {"file_path": str(int(r["sample_id"])),
                 "scene_graph": sg,
                 "bev": torch.from_numpy(cls),

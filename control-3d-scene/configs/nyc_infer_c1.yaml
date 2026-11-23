@@ -1,0 +1,54 @@
+# Change 1 on top of the true-center baseline: numeric node attributes + street-facing graph.
+# Everything else is identical to nyc_infer.yaml.
+# Generate test windows with the NYC baseline: 4 samples per input, positions from
+# the localization head (as Liu at inference).
+stage: sg_to_bev
+mode: inference
+dataset: nyc
+
+num_classes: 10
+num_road_types: 6
+node_in_channels: 33       # change 1: 27 + 6 numbers
+gnn_hidden: 32
+gnn_heads: 4
+bev_size: 128
+scene_shape: [64, 64, 8]
+diffusion_steps: 100
+auxiliary_loss_weight: 0.0005
+recon_loss_weight: 0.2
+seg_loss_weight: 0.2
+uncond_prob: 0.1
+gumbel_tau: 2.0
+overlap_move: 5
+feature_mask_ratio: 0.0
+
+nyc_root: /home/ubuntu/genai-final/data/city
+knn: 4                     # unused with the street graph
+numeric: true              # change 1: numeric node attributes
+graph: street              # change 1: blocks facing across a street (edges.parquet)
+edge_dim: 2                # change 1: facing length, street width on each edge
+min_visible_cells: 20      # drop blocks with < 20 cells (320 m2) inside the window; targets always kept
+train_split: train
+val_split: val
+infer_split: test
+infer_subset: /home/ubuntu/genai-final/data/city/test_subset.json
+infer_n: 200
+max_samples: 0
+
+batch_size: 8
+num_workers: 3
+num_steps: null
+samples_per_input: 4
+use_gt_positions: false
+png_n: 24
+save_ply: false
+
+gpus: [0]
+num_node: 1
+node_rank: 0
+
+resume: true
+resume_path: /home/ubuntu/genai-final/checkpoints/nyc_baseline_loc/latest.tar
+
+log_home: /home/ubuntu/genai-final/generated
+log_path: ''

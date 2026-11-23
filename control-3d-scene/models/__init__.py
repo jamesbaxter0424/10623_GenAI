@@ -18,6 +18,7 @@ def build_model(cfg):
             uncond_prob=cfg.uncond_prob,
             gumbel_tau=cfg.gumbel_tau,
             overlap_move=cfg.overlap_move,
+            edge_dim=cfg.get("edge_dim", None),
         )
     if cfg.stage == "bev_to_3d":
         return BEVto3D(

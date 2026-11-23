@@ -7,14 +7,15 @@ from torch_geometric.utils import negative_sampling
 EPS = 1e-15
 
 class GATEncoder(nn.Module):
-    def __init__(self, in_channels, hidden_channels, heads=4):
+    def __init__(self, in_channels, hidden_channels, heads=4, edge_dim=None):
         super().__init__()
-        self.conv1 = GATConv(in_channels, hidden_channels, heads=heads)
-        self.conv2 = GATConv(hidden_channels * heads, hidden_channels, heads=1)
+        # edge_dim (change 1): edge features enter the attention scores; None = Liu's GAT
+        self.conv1 = GATConv(in_channels, hidden_channels, heads=heads, edge_dim=edge_dim)
+        self.conv2 = GATConv(hidden_channels * heads, hidden_channels, heads=1, edge_dim=edge_dim)
 
-    def forward(self, x, edge_index, batch):
-        x = F.elu(self.conv1(x, edge_index))
-        node_emb = self.conv2(x, edge_index)
+    def forward(self, x, edge_index, batch, edge_attr=None):
+        x = F.elu(self.conv1(x, edge_index, edge_attr=edge_attr))
+        node_emb = self.conv2(x, edge_index, edge_attr=edge_attr)
         global_emb = global_mean_pool(node_emb, batch)
         return node_emb, global_emb
 
@@ -30,11 +31,12 @@ class MLPHead(nn.Module):
 class SceneGraphGNN(nn.Module):
 
     def __init__(self, in_channels=34, hidden_channels=32, heads=4,
-                 num_classes=11, bev_size=64):
+                 num_classes=11, bev_size=64, edge_dim=None):
         super().__init__()
         self.hidden_channels = hidden_channels
         self.bev_size = bev_size
-        self.encoder = GATEncoder(in_channels, hidden_channels, heads)
+        self.edge_dim = edge_dim
+        self.encoder = GATEncoder(in_channels, hidden_channels, heads, edge_dim)
         self.reduce_dim = nn.Conv1d(hidden_channels * 2, hidden_channels, kernel_size=1)
         self.localization_head = MLPHead(hidden_channels, bev_size * bev_size)
         self.node_classifier = MLPHead(hidden_channels, num_classes)
@@ -42,7 +44,8 @@ class SceneGraphGNN(nn.Module):
 
     def encode(self, scene_graph):
         node_emb, global_emb = self.encoder(
-            scene_graph.x, scene_graph.edge_index, scene_graph.batch)
+            scene_graph.x, scene_graph.edge_index, scene_graph.batch,
+            scene_graph.edge_attr if self.edge_dim else None)
         combined = torch.cat([node_emb, global_emb[scene_graph.batch]], dim=1)
         cane = self.reduce_dim(combined.unsqueeze(-1)).squeeze(-1)
         return cane, node_emb

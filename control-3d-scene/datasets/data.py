@@ -20,14 +20,16 @@ def _nyc_dataset(cfg, training):
             cfg.nyc_root, split=cfg.train_split, knn=cfg.get("knn", 4),
             feature_mask_ratio=cfg.feature_mask_ratio,
             max_samples=cfg.get("max_samples", None), repeat=cfg.get("repeat", 1),
-            min_visible_cells=cfg.get("min_visible_cells", 0))
+            min_visible_cells=cfg.get("min_visible_cells", 0),
+            numeric=cfg.get("numeric", False), graph=cfg.get("graph", "knn"))
     ids = None
     if cfg.get("infer_subset", ""):
         ids = load_subset(cfg.infer_subset, cfg.get("infer_n", None))
     return NYCSceneGraphDataset(
         cfg.nyc_root, split=cfg.infer_split, knn=cfg.get("knn", 4),
         sample_ids=ids, max_samples=cfg.get("max_samples", None),
-        min_visible_cells=cfg.get("min_visible_cells", 0))
+        min_visible_cells=cfg.get("min_visible_cells", 0),
+        numeric=cfg.get("numeric", False), graph=cfg.get("graph", "knn"))
 
 def build_train_loader(cfg):
     if cfg.get("dataset", "carla") == "nyc":

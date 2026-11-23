@@ -1,0 +1,66 @@
+# Change 1 on top of the true-center baseline: numeric node attributes + street-facing graph.
+# Everything else is identical to nyc_train.yaml.
+# Original Liu model on NYC (baseline). Liu's hyper-parameters are kept as in
+# train_sg_to_bev.yaml; only data-dependent sizes and machine limits change.
+stage: sg_to_bev
+mode: train
+dataset: nyc
+
+num_classes: 10            # NYC map classes (Liu: 11)
+num_road_types: 6          # unused for NYC (road type dropped)
+node_in_channels: 33       # change 1: 27 + 6 numbers (coverage, FAR, floors, res share, area, unreliable flag)
+gnn_hidden: 32
+gnn_heads: 4
+bev_size: 128              # 128 x 128 cells @ 4 m (Liu: 64)
+scene_shape: [64, 64, 8]
+diffusion_steps: 100
+auxiliary_loss_weight: 0.0005
+recon_loss_weight: 0.2
+seg_loss_weight: 0.2
+uncond_prob: 0.1
+gumbel_tau: 2.0
+overlap_move: 5
+feature_mask_ratio: 0.3
+
+nyc_root: /home/ubuntu/genai-final/data/city
+knn: 4                     # unused with the street graph
+numeric: true              # change 1: numeric node attributes
+graph: street              # change 1: blocks facing across a street (edges.parquet)
+edge_dim: 2                # change 1: facing length, street width on each edge
+min_visible_cells: 20      # drop blocks with < 20 cells (320 m2) inside the window; targets always kept
+train_split: train
+val_split: val
+max_samples: 0
+repeat: 1
+
+gpus: [0]
+num_node: 1
+node_rank: 0
+distribution: false
+
+batch_size: 16
+num_workers: 3             # AWS g5.xlarge has 4 vCPUs (Liu: 8)
+pin_memory: true
+epochs: 1000
+max_hours: 12.0            # same wall-clock budget for every model we compare
+check_every: 5
+keep_ckpts: 2
+print_every: 100
+log_newline: true
+optimizer: adamw
+lr: 0.004
+momentum: 0.9
+momentum_sqr: 0.999
+warmup: null
+milestones: []
+gamma: 0.1
+clip_norm: 1.0             # Liu: null. Run 1 without clipping had a loss spike at lr 0.004
+                           # (diffusion ~5 -> ~16 in epoch 2); same setting for all compared models
+clip_value: null
+
+resume: false
+resume_path: ''
+resume_optimizer: false
+
+log_home: /home/ubuntu/genai-final/checkpoints
+log_path: ''

@@ -124,8 +124,9 @@ def fit_floors(city):
     return f_by_class
 
 
-def test_order(city, seed=C.TEST_SEED):
-    """Fixed random ordering of the clean test windows (identical to nyc_tools.py subset)."""
+def test_order(city, seed=C.TEST_SEED, split="test"):
+    """Fixed random ordering of the clean windows of a split (for "test", identical to the
+    nyc_tools.py subset; "train" is used only for the train-vs-test overfitting check)."""
     s = city.samples.reset_index()
-    s = s[(s["split"] == "test") & (~s["ctx_other_split"])]
+    s = s[(s["split"] == split) & (~s["ctx_other_split"])]
     return [int(i) for i in np.random.default_rng(seed).permutation(s["sample_id"].to_numpy())]

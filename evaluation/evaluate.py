@@ -192,6 +192,7 @@ def main():
     p.add_argument("--n", type=int, default=C.N_TEST)
     p.add_argument("--n_boot", type=int, default=C.N_BOOT)
     p.add_argument("--compare", nargs=2, metavar=("DIR_A", "DIR_B"))
+    p.add_argument("--split", default="test", help="windows to score; train only for the overfitting check")
     a = p.parse_args()
 
     if a.compare:
@@ -201,7 +202,7 @@ def main():
         return
 
     city = City()
-    order = test_order(city)[:a.n]
+    order = test_order(city, split=a.split)[:a.n]
     if a.oracle:
         def gen_fn(sid):
             return city.window(sid)[0][None], None
@@ -211,7 +212,7 @@ def main():
     ids = [s for s in order if s in files]
     missing = len(order) - len(ids)
     if missing:
-        print(f"warning: {missing} of the first {len(order)} test windows have no prediction file", file=sys.stderr)
+        print(f"warning: {missing} of the first {len(order)} {a.split} windows have no prediction file", file=sys.stderr)
 
     def gen_fn(sid):
         z = np.load(files[sid])

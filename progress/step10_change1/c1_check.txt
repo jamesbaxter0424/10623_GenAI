@@ -1,0 +1,18 @@
+windows 2000, nodes 48439  (baseline features identical: OK)
+
+node numbers: name, min, p50, p99, max, NaN
+  coverage             0.000   0.375   0.917   0.993 0
+  log1p FAR            0.000   0.555   2.662   4.047 0
+  log1p floors / 2     0.000   0.549   1.417   2.131 0
+  res share            0.000   0.873   1.000   1.000 0
+  log10 area / 5       0.000   0.796   0.958   1.059 0
+  unreliable           0.000   0.000   1.000   1.000 0
+  unreliable share 0.057
+edge features: facing/100 m, street/30 m (min, p50, p99, max)
+  facing    0.160  1.120  4.080  5.000
+  street    0.133  0.730  2.082  2.800
+
+edges per window: kNN median 57, street median 42
+centroid length (m): kNN median 122, p95 201, >200 m 0.051
+                     street median 105, p95 214, >200 m 0.076
+nodes without a street edge: 22 of 48439 (0.000)
