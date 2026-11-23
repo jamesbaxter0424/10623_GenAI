@@ -1,0 +1,141 @@
+sample_id,block_id,style,request,raw_parser_output,json_valid,error,block_id_correct,coverage_correct,far_fp_correct,hclass_correct,res_share_correct,accepted
+24567,4-13253-a,exact,"Generate an urban massing layout for block ID 4-13253-a with a coverage of 16.28%, a floor area ratio (FAR) of 0.335, buildings ranging from 1 to 2 floors in height, and a residential floor area share of 94.46%.","{
+  ""block_id"": ""4-13253-a"",
+  ""coverage"": 0.1628,
+  ""far_fp"": 0.335,
+  ""hclass"": 0,
+  ""res_share"": 0.9446
+}",True,,True,True,True,True,True,True
+19374,4-06930-a,exact,"Generate an urban massing layout for block ID 4-06930-a with a coverage of 58.51%, a floor area ratio (FAR) of 1.0415, buildings ranging from 1 to 2 floors in height, and a residential floor area share of 54.83%.","{
+  ""block_id"": ""4-06930-a"",
+  ""coverage"": 0.5851,
+  ""far_fp"": 1.0415,
+  ""hclass"": 0,
+  ""res_share"": 0.5483
+}",True,,True,True,True,True,True,True
+19983,4-07918-a,exact,"Generate an urban massing layout for block ID 4-07918-a with a coverage of 29.36%, a floor area ratio (FAR) of 0.5053, buildings ranging from 1 to 2 floors in height, and a residential floor area share of 97.8%.","{
+  ""block_id"": ""4-07918-a"",
+  ""coverage"": 0.2936,
+  ""far_fp"": 0.5053,
+  ""hclass"": 0,
+  ""res_share"": 0.978
+}",True,,True,True,True,True,True,True
+12704,3-07573-a,exact,"Generate an urban massing layout for block ID 3-07573-a with a coverage of 43.72%, a floor area ratio (FAR) of 1.4272, buildings ranging from 3 to 5 floors in height, and a residential floor area share of 97.95%.","{
+  ""block_id"": ""3-07573-a"",
+  ""coverage"": 0.4372,
+  ""far_fp"": 1.4272,
+  ""hclass"": 1,
+  ""res_share"": 0.9795
+}",True,,True,True,True,True,True,True
+10410,3-05215-a,exact,"Generate an urban massing layout for block ID 3-05215-a with a coverage of 54.71%, a floor area ratio (FAR) of 1.9195, buildings ranging from 3 to 5 floors in height, and a residential floor area share of 89.1%.","{
+  ""block_id"": ""3-05215-a"",
+  ""coverage"": 0.5471,
+  ""far_fp"": 1.9195,
+  ""hclass"": 1,
+  ""res_share"": 0.891
+}",True,,True,True,True,True,True,True
+11907,3-06710-a,exact,"Generate an urban massing layout for block ID 3-06710-a with a coverage of 39.98%, a floor area ratio of 1.0011, buildings ranging from 3 to 5 floors in height, and a residential floor area share of 88.56%.","{
+  ""block_id"": ""3-06710-a"",
+  ""coverage"": 0.3998,
+  ""far_fp"": 1.0011,
+  ""hclass"": 1,
+  ""res_share"": 0.8856
+}",True,,True,True,True,True,True,True
+15688,4-02100-a,exact,"Generate an urban massing layout for block 4-02100-a with a coverage of 45.73%, a floor area ratio of 2.4861, buildings ranging from 6 to 12 floors in height, and a residential floor area share of 98.39%.","{
+  ""block_id"": ""4-02100-a"",
+  ""coverage"": 0.4573,
+  ""far_fp"": 2.4861,
+  ""hclass"": 2,
+  ""res_share"": 0.9839
+}",True,,True,True,True,True,True,True
+7570,3-01740-a,exact,"Generate an urban massing layout for block ID 3-01740-a with a coverage of 18.14%, a floor area ratio (FAR) of 1.5983, buildings ranging from 6 to 12 floors in height, and a residential floor area share of 100%.","{
+  ""block_id"": ""3-01740-a"",
+  ""coverage"": 0.1814,
+  ""far_fp"": 1.5983,
+  ""hclass"": 2,
+  ""res_share"": 1
+}",True,,True,True,True,True,True,True
+1701,1-01694-a,exact,"Generate an urban massing layout for block ID 1-01694-a with a coverage of 49.47%, a floor area ratio of 4.496, buildings ranging from 13 or more floors in height, and a residential floor area share of 87.14%.","{
+  ""block_id"": ""1-01694-a"",
+  ""coverage"": 0.4947,
+  ""far_fp"": 4.496,
+  ""hclass"": 3,
+  ""res_share"": 0.8714
+}",True,,True,True,True,True,True,True
+1276,1-01304-a,exact,"Generate an urban massing layout for block ID 1-01304-a with a coverage of 80.69%, a floor area ratio (FAR) of 21.6289, buildings ranging from 13 or more floors in height, and a residential floor area share of 18.32%.","{
+  ""block_id"": ""1-01304-a"",
+  ""coverage"": 0.8069,
+  ""far_fp"": 21.6289,
+  ""hclass"": 3,
+  ""res_share"": 0.1832
+}",True,,True,True,True,True,True,True
+24567,4-13253-a,natural,"Create a massing layout for block 4-13253-a that features a low-density development with a building coverage ratio of 16.28%, ensuring that the total floor area ratio does not exceed 0.335. The buildings should range in height from 1 to 2 floors, with the majority of the floor area dedicated to residential use, accounting for approximately 94.46% of the total. The design should maintain a cohesive urban character while allowing for appropriate open space and street frontage.","{
+  ""block_id"": ""4-13253-a"",
+  ""coverage"": 0.1628,
+  ""far_fp"": 0.335,
+  ""hclass"": 0,
+  ""res_share"": 0.9446
+}",True,,True,True,True,True,True,True
+19374,4-06930-a,natural,"Create an urban massing layout for block 4-06930-a that features a building coverage ratio of approximately 58.5%, with a floor area ratio of 1.04. The development should consist of structures ranging from 1 to 2 floors in height, ensuring a low-rise character across the entire block. Residential uses should account for about 54.8% of the total floor area, with the remaining space allocated to commercial and mixed-use functions. The design should maintain a balanced and walkable urban form while adhering to the specified density and height constraints.","{
+  ""block_id"": ""4-06930-a"",
+  ""coverage"": 0.585,
+  ""far_fp"": 1.04,
+  ""hclass"": 0,
+  ""res_share"": 0.548
+}",True,,True,True,True,True,True,True
+19983,4-07918-a,natural,"Create a massing layout for block 4-07918-a that features a building coverage ratio of approximately 29.36%, with a floor area ratio of 0.5053. The development should consist of structures ranging from 1 to 2 floors in height, ensuring a low-rise character throughout the site. Residential use should account for 97.8% of the total floor area, with the remaining space allocated to non-residential functions. The design should maintain a balanced and cohesive urban form that respects the block's spatial constraints.","{
+  ""block_id"": ""4-07918-a"",
+  ""coverage"": 0.2936,
+  ""far_fp"": 0.5053,
+  ""hclass"": 0,
+  ""res_share"": 0.978
+}",True,,True,True,True,True,True,True
+12704,3-07573-a,natural,"Create a massing layout for block 3-07573-a that achieves a building coverage ratio of approximately 43.72%, with a floor area ratio of 1.4272. The development should consist of buildings ranging in height from 3 to 5 floors, ensuring a predominantly residential character, as residential floor area should account for about 97.95% of the total floor area. The design should balance density with adequate open space and maintain a cohesive urban form.","{
+  ""block_id"": ""3-07573-a"",
+  ""coverage"": 0.4372,
+  ""far_fp"": 1.4272,
+  ""hclass"": 1,
+  ""res_share"": 0.9795
+}",True,,True,True,True,True,True,True
+10410,3-05215-a,natural,"Create a massing layout for block 3-05215-a that achieves a building coverage ratio of approximately 54.7% and a floor area ratio of 1.92. The development should consist of buildings ranging in height from 3 to 5 floors, with a residential floor area share of 89.1%. Ensure the design respects the given FAR and coverage while maintaining a cohesive urban form.","{
+  ""block_id"": ""3-05215-a"",
+  ""coverage"": 0.547,
+  ""far_fp"": 1.92,
+  ""hclass"": 1,
+  ""res_share"": 0.891
+}",True,,True,True,True,True,True,True
+11907,3-06710-a,natural,"Create a massing layout for block 3-06710-a that features a building coverage ratio of approximately 40%, with a floor area ratio just over 1.0. The development should consist of structures ranging in height from 3 to 5 floors, and the residential floor area should make up about 88.6% of the total. Ensure the design maintains a balanced urban character while adhering to the specified spatial and regulatory parameters.","{
+  ""block_id"": ""3-06710-a"",
+  ""coverage"": 0.4,
+  ""far_fp"": 1.01,
+  ""hclass"": 1,
+  ""res_share"": 0.886
+}",True,,True,True,True,True,True,True
+15688,4-02100-a,natural,"Create a massing layout for block 4-02100-a that achieves a building coverage ratio of approximately 45.73%, with a floor area ratio of 2.4861. The development should consist of structures ranging in height from 6 to 12 floors, ensuring a predominantly residential character that accounts for 98.39% of the total floor area. The design should balance density with adequate open space and maintain the specified FAR without exceeding the coverage limit.","{
+  ""block_id"": ""4-02100-a"",
+  ""coverage"": 0.4573,
+  ""far_fp"": 2.4861,
+  ""hclass"": 2,
+  ""res_share"": 0.9839
+}",True,,True,True,True,True,True,True
+7570,3-01740-a,natural,"Design an urban massing layout for block 3-01740-a that features a building coverage ratio of 18.14%, with a floor area ratio of 1.5983. The development should consist of structures ranging in height from 6 to 12 floors, and all floor area must be dedicated to residential use. Ensure the layout adheres to the specified density and height parameters while maintaining a cohesive urban form.","{
+  ""block_id"": ""3-01740-a"",
+  ""coverage"": 0.1814,
+  ""far_fp"": 1.5983,
+  ""hclass"": 2,
+  ""res_share"": 1
+}",True,,True,True,True,True,True,True
+1701,1-01694-a,natural,"Create an urban massing layout for block 1-01694-a that features a building coverage ratio of approximately 49.5%, with a floor area ratio of 4.5. The development should include structures with a height of 13 or more floors, and the residential floor area should account for 87.14% of the total. Ensure the design adheres to the specified metrics while maintaining a cohesive and context-sensitive urban form.","{
+  ""block_id"": ""1-01694-a"",
+  ""coverage"": 0.495,
+  ""far_fp"": 4.5,
+  ""hclass"": 3,
+  ""res_share"": 0.8714
+}",True,,True,True,True,True,True,True
+1276,1-01304-a,natural,"Create an urban massing layout for block 1-01304-a that features a high building coverage of 80.69%, with a floor area ratio of 21.63. The development should include buildings of 13 or more floors, ensuring a dense vertical form that maximizes floor area while maintaining a cohesive skyline. Approximately 18.32% of the total floor area should be allocated to residential uses, with the remaining space supporting commercial and mixed-use functions. The design should balance density with the vertical height constraints specified.","{
+  ""block_id"": ""1-01304-a"",
+  ""coverage"": 0.8069,
+  ""far_fp"": 21.63,
+  ""hclass"": 3,
+  ""res_share"": 0.1832
+}",True,,True,True,True,True,True,True

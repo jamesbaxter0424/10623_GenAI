@@ -1,0 +1,612 @@
+[
+  {
+    "sample_id": 24567,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "4-13253-a",
+        "coverage": 0.1628,
+        "far_fp": 0.335,
+        "hclass": 0,
+        "res_share": 0.9446,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "4-13248-a",
+        "coverage": 0.3217,
+        "far_fp": 0.5626,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-13249-a",
+        "coverage": 0.2822,
+        "far_fp": 0.5196,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-13252-a",
+        "coverage": 0.2741,
+        "far_fp": 0.5175,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-13265-a",
+        "coverage": 0.0797,
+        "far_fp": 0.1591,
+        "hclass": 0,
+        "res_share": 0.1343,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-13266-a",
+        "coverage": 0.0695,
+        "far_fp": 0.1681,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 19374,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "4-06930-a",
+        "coverage": 0.5851,
+        "far_fp": 1.0415,
+        "hclass": 0,
+        "res_share": 0.5483,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "4-06928-a",
+        "coverage": 0.4311,
+        "far_fp": 0.6361,
+        "hclass": 0,
+        "res_share": 0.5101,
+        "median_floors": 1.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-06929-a",
+        "coverage": 0.359,
+        "far_fp": 0.7298,
+        "hclass": 0,
+        "res_share": 0.8144,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-06950-a",
+        "coverage": 0.3566,
+        "far_fp": 0.7042,
+        "hclass": 0,
+        "res_share": 0.8524,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-06951-a",
+        "coverage": 0.4844,
+        "far_fp": 0.9688,
+        "hclass": 0,
+        "res_share": 0.9156,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-07107-a",
+        "coverage": 0.2975,
+        "far_fp": 0.5381,
+        "hclass": 0,
+        "res_share": 0.9498,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-07130-a",
+        "coverage": 0.2576,
+        "far_fp": 0.4773,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 19983,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "4-07918-a",
+        "coverage": 0.2936,
+        "far_fp": 0.5053,
+        "hclass": 0,
+        "res_share": 0.978,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "4-07849-a",
+        "coverage": 0.0,
+        "far_fp": 0.0,
+        "hclass": -1,
+        "res_share": 0.0,
+        "median_floors": 0.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-07917-a",
+        "coverage": 0.2888,
+        "far_fp": 0.4934,
+        "hclass": 0,
+        "res_share": 0.9787,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-07919-a",
+        "coverage": 0.3219,
+        "far_fp": 0.557,
+        "hclass": 0,
+        "res_share": 1.0,
+        "median_floors": 2.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-07933-a",
+        "coverage": 0.3553,
+        "far_fp": 0.4913,
+        "hclass": 0,
+        "res_share": 0.9862,
+        "median_floors": 1.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 12704,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "3-07573-a",
+        "coverage": 0.4372,
+        "far_fp": 1.4272,
+        "hclass": 1,
+        "res_share": 0.9795,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "3-07572-a",
+        "coverage": 0.3623,
+        "far_fp": 0.8668,
+        "hclass": 0,
+        "res_share": 0.8507,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-07574-a",
+        "coverage": 0.4308,
+        "far_fp": 1.0044,
+        "hclass": 0,
+        "res_share": 0.4642,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-07591-a",
+        "coverage": 0.4848,
+        "far_fp": 1.0963,
+        "hclass": 0,
+        "res_share": 0.9733,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 10410,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "3-05215-a",
+        "coverage": 0.5471,
+        "far_fp": 1.9195,
+        "hclass": 1,
+        "res_share": 0.891,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "3-05214-a",
+        "coverage": 0.5519,
+        "far_fp": 1.3815,
+        "hclass": 1,
+        "res_share": 0.9419,
+        "median_floors": 2.5,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-05215-b",
+        "coverage": 0.5863,
+        "far_fp": 1.2103,
+        "hclass": 0,
+        "res_share": 0.8365,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-05216-a",
+        "coverage": 0.5352,
+        "far_fp": 2.0346,
+        "hclass": 1,
+        "res_share": 0.3475,
+        "median_floors": 4.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-05230-a",
+        "coverage": 0.511,
+        "far_fp": 1.1687,
+        "hclass": 0,
+        "res_share": 0.9288,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 11907,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "3-06710-a",
+        "coverage": 0.3998,
+        "far_fp": 1.0011,
+        "hclass": 1,
+        "res_share": 0.8856,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "3-06701-a",
+        "coverage": 0.402,
+        "far_fp": 1.8794,
+        "hclass": 2,
+        "res_share": 0.9985,
+        "median_floors": 6.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-06709-a",
+        "coverage": 0.3808,
+        "far_fp": 1.551,
+        "hclass": 1,
+        "res_share": 0.5697,
+        "median_floors": 4.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-06711-a",
+        "coverage": 0.4288,
+        "far_fp": 1.0958,
+        "hclass": 1,
+        "res_share": 0.8917,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-06719-a",
+        "coverage": 0.4363,
+        "far_fp": 1.1747,
+        "hclass": 1,
+        "res_share": 0.8795,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 15688,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "4-02100-a",
+        "coverage": 0.4573,
+        "far_fp": 2.4861,
+        "hclass": 2,
+        "res_share": 0.9839,
+        "median_floors": 6.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "4-02099-a",
+        "coverage": 0.7275,
+        "far_fp": 4.6312,
+        "hclass": 2,
+        "res_share": 0.8427,
+        "median_floors": 6.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-02101-a",
+        "coverage": 0.4886,
+        "far_fp": 2.6268,
+        "hclass": 2,
+        "res_share": 0.9836,
+        "median_floors": 6.0,
+        "boro": "QN",
+        "split": "train"
+      },
+      {
+        "block_id": "4-02112-a",
+        "coverage": 0.6653,
+        "far_fp": 3.9918,
+        "hclass": 2,
+        "res_share": 0.9974,
+        "median_floors": 6.0,
+        "boro": "QN",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 7570,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "3-01740-a",
+        "coverage": 0.1814,
+        "far_fp": 1.5983,
+        "hclass": 2,
+        "res_share": 1.0,
+        "median_floors": 11.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "3-01731-a",
+        "coverage": 0.4824,
+        "far_fp": 1.107,
+        "hclass": 0,
+        "res_share": 0.9227,
+        "median_floors": 2.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01732-a",
+        "coverage": 0.5626,
+        "far_fp": 2.119,
+        "hclass": 1,
+        "res_share": 0.8792,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01739-a",
+        "coverage": 0.4117,
+        "far_fp": 1.3775,
+        "hclass": 1,
+        "res_share": 0.4874,
+        "median_floors": 3.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01743-a",
+        "coverage": 0.4902,
+        "far_fp": 1.8589,
+        "hclass": 1,
+        "res_share": 0.2725,
+        "median_floors": 4.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01747-a",
+        "coverage": 0.585,
+        "far_fp": 4.0075,
+        "hclass": 2,
+        "res_share": 0.852,
+        "median_floors": 7.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01749-a",
+        "coverage": 0.1926,
+        "far_fp": 0.8317,
+        "hclass": 1,
+        "res_share": 0.8334,
+        "median_floors": 5.0,
+        "boro": "BK",
+        "split": "train"
+      },
+      {
+        "block_id": "3-01756-a",
+        "coverage": 0.5677,
+        "far_fp": 2.6598,
+        "hclass": 1,
+        "res_share": 0.7899,
+        "median_floors": 5.0,
+        "boro": "BK",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 1701,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "1-01694-a",
+        "coverage": 0.4947,
+        "far_fp": 4.496,
+        "hclass": 3,
+        "res_share": 0.8714,
+        "median_floors": 13.0,
+        "boro": "MN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "1-01672-a",
+        "coverage": 0.4356,
+        "far_fp": 3.2547,
+        "hclass": 2,
+        "res_share": 0.8801,
+        "median_floors": 7.0,
+        "boro": "MN",
+        "split": "train"
+      },
+      {
+        "block_id": "1-01673-a",
+        "coverage": 0.4769,
+        "far_fp": 2.9776,
+        "hclass": 2,
+        "res_share": 0.8764,
+        "median_floors": 6.0,
+        "boro": "MN",
+        "split": "train"
+      },
+      {
+        "block_id": "1-01693-a",
+        "coverage": 0.2655,
+        "far_fp": 1.3273,
+        "hclass": 1,
+        "res_share": 0.0,
+        "median_floors": 5.0,
+        "boro": "MN",
+        "split": "train"
+      },
+      {
+        "block_id": "1-01696-a",
+        "coverage": 0.2117,
+        "far_fp": 1.1896,
+        "hclass": 1,
+        "res_share": 1.0,
+        "median_floors": 5.0,
+        "boro": "MN",
+        "split": "train"
+      }
+    ]
+  },
+  {
+    "sample_id": 1276,
+    "style": null,
+    "targets": [
+      {
+        "block_id": "1-01304-a",
+        "coverage": 0.8069,
+        "far_fp": 21.6289,
+        "hclass": 3,
+        "res_share": 0.1832,
+        "median_floors": 19.0,
+        "boro": "MN",
+        "split": "train"
+      }
+    ],
+    "neighbors": [
+      {
+        "block_id": "1-01303-a",
+        "coverage": 0.7164,
+        "far_fp": 20.5628,
+        "hclass": 3,
+        "res_share": 0.2236,
+        "median_floors": 34.0,
+        "boro": "MN",
+        "split": "train"
+      },
+      {
+        "block_id": "1-01305-a",
+        "coverage": 0.9113,
+        "far_fp": 17.0811,
+        "hclass": 3,
+        "res_share": 0.0654,
+        "median_floors": 19.0,
+        "boro": "MN",
+        "split": "train"
+      },
+      {
+        "block_id": "1-01323-a",
+        "coverage": 0.6634,
+        "far_fp": 9.5912,
+        "hclass": 2,
+        "res_share": 0.3694,
+        "median_floors": 6.0,
+        "boro": "MN",
+        "split": "train"
+      }
+    ]
+  }
+]

@@ -1,0 +1,91 @@
+style,sample_id,block_id,request,raw_parser_output,json_valid,accepted,error
+qualitative,24567,4-13253-a,"Generate an urban massing proposal for block 4-13253-a that reflects a low FAR category, ensuring a lower density development that maintains a balanced relationship between built form and open space.","{
+  ""block_id"": ""4-13253-a"",
+  ""far_category"": ""low""
+}",True,True,
+comparative,24567,4-13253-a,Block 4-13253-a should have a lower FAR than Block 4-13248-a to maintain a balanced urban density and ensure appropriate spatial relationships between adjacent developments.,"{
+  ""block_id"": ""4-13253-a"",
+  ""reference_block_id"": ""4-13248-a"",
+  ""far_relation"": ""lower""
+}",True,True,
+qualitative,19374,4-06930-a,"Generate an urban massing proposal for block 4-06930-a that reflects a medium density character, with a FAR within the range associated with medium density in New York City.","{
+  ""block_id"": ""4-06930-a"",
+  ""far_category"": ""medium""
+}",True,True,
+comparative,19374,4-06930-a,"The target block 4-06930-a should have a higher FAR than the neighboring reference block 4-07130-a, while maintaining a cohesive urban character and ensuring appropriate density and building scale within the district.","{
+  ""block_id"": ""4-06930-a"",
+  ""reference_block_id"": ""4-07130-a"",
+  ""far_relation"": ""higher""
+}",True,True,
+qualitative,19983,4-07918-a,"Generate an urban massing proposal for block 4-07918-a that reflects a low FAR category, ensuring a moderate density with a focus on open space and permeability.","{
+  ""block_id"": ""4-07918-a"",
+  ""far_category"": ""low""
+}",True,True,
+comparative,19983,4-07918-a,Block 4-07918-a should have a lower FAR than Block 4-07919-a to maintain a balanced urban character and ensure appropriate density contrast between the two adjacent developments.,"{
+  ""block_id"": ""4-07918-a"",
+  ""reference_block_id"": ""4-07919-a"",
+  ""far_relation"": ""lower""
+}",True,True,
+qualitative,12704,3-07573-a,"Generate an urban massing proposal for block 3-07573-a that reflects a high FAR category, ensuring a dense and vertically integrated development while maintaining a cohesive urban form.","{
+  ""block_id"": ""3-07573-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,12704,3-07573-a,"The target block 3-07573-a should have a higher FAR than the neighboring reference block 3-07572-a, while maintaining a cohesive urban character and ensuring appropriate density and building scale within the district.","{
+  ""block_id"": ""3-07573-a"",
+  ""reference_block_id"": ""3-07572-a"",
+  ""far_relation"": ""higher""
+}",True,True,
+qualitative,10410,3-05215-a,"Generate an urban massing proposal for block 3-05215-a that reflects a high density FAR category, ensuring the design aligns with the qualitative density constraints of the high FAR zone without specifying the exact FAR value.","{
+  ""block_id"": ""3-05215-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,10410,3-05215-a,"The target block 3-05215-a should have a higher FAR than the neighboring reference block 3-05230-a, while maintaining a cohesive urban character and ensuring appropriate density and building scale within the district.","{
+  ""block_id"": ""3-05215-a"",
+  ""reference_block_id"": ""3-05230-a"",
+  ""far_relation"": ""higher""
+}",True,True,
+qualitative,11907,3-06710-a,"Generate an urban massing proposal for block 3-06710-a that reflects a medium density character, with a FAR within the range associated with medium density in New York City.","{
+  ""block_id"": ""3-06710-a"",
+  ""far_category"": ""medium""
+}",True,True,
+comparative,11907,3-06710-a,Block 3-06710-a should have a lower FAR than Block 3-06701-a to maintain a balanced urban density and ensure appropriate spatial harmony with the surrounding area.,"{
+  ""block_id"": ""3-06710-a"",
+  ""reference_block_id"": ""3-06701-a"",
+  ""far_relation"": ""lower""
+}",True,True,
+qualitative,15688,4-02100-a,"Generate an urban massing proposal for block 4-02100-a that reflects a high density FAR category, ensuring the design aligns with the qualitative density constraints of a high FAR zone without specifying the exact FAR value.","{
+  ""block_id"": ""4-02100-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,15688,4-02100-a,Block 4-02100-a should have a lower FAR than Block 4-02099-a to maintain a balanced urban density and ensure appropriate spatial relationships between the two adjacent developments.,"{
+  ""block_id"": ""4-02100-a"",
+  ""reference_block_id"": ""4-02099-a"",
+  ""far_relation"": ""lower""
+}",True,True,
+qualitative,7570,3-01740-a,"Generate an urban massing proposal for block 3-01740-a that reflects a high FAR category, ensuring a dense development pattern consistent with the city's high-density zoning framework.","{
+  ""block_id"": ""3-01740-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,7570,3-01740-a,"The target block 3-01740-a should have a lower FAR than the neighboring reference block 3-01747-a, in accordance with the established urban density relationship.","{
+  ""block_id"": ""3-01740-a"",
+  ""reference_block_id"": ""3-01747-a"",
+  ""far_relation"": ""lower""
+}",True,True,
+qualitative,1701,1-01694-a,"Generate an urban massing proposal for block 1-01694-a that reflects a high density FAR category, ensuring the design aligns with the qualitative density constraints of a high FAR zone without specifying the exact FAR value.","{
+  ""block_id"": ""1-01694-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,1701,1-01694-a,"The target block 1-01694-a should have a higher FAR than the neighboring reference block 1-01696-a, in accordance with the established urban density relationship.","{
+  ""block_id"": ""1-01694-a"",
+  ""reference_block_id"": ""1-01696-a"",
+  ""far_relation"": ""higher""
+}",True,True,
+qualitative,1276,1-01304-a,"Generate an urban massing proposal for block 1-01304-a that reflects a high density FAR category, ensuring the design aligns with the qualitative density constraints of a high FAR zone without specifying the exact FAR value.","{
+  ""block_id"": ""1-01304-a"",
+  ""far_category"": ""high""
+}",True,True,
+comparative,1276,1-01304-a,"The target block 1-01304-a should have a higher FAR than the neighboring reference block 1-01323-a, in accordance with the established urban density framework.","{
+  ""block_id"": ""1-01304-a"",
+  ""reference_block_id"": ""1-01323-a"",
+  ""far_relation"": ""higher""
+}",True,True,
