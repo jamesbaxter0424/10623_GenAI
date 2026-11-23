@@ -1,0 +1,7 @@
+VQGAN: 190 log rows, last step 18913, 4.00 h
+  val acc 0.724 (step 1000) -> 0.918; building 0.419 -> 0.891
+  val acc gain, last hour: +0.0101; first hour: +0.1257
+  train CE last 10 rows 0.1833; 10 rows one hour earlier 0.2087
+Sampler: last step 49406, 8.00 h
+  val rw_elbo 0.8150 -> 0.6692
+  change per hour: 0-1 h -0.0010, 1-2 h -0.0440, 2-3 h -0.0069, 3-4 h -0.0258, 4-5 h -0.0110, 5-6 h -0.0195, 6-7 h -0.0222, 7-8 h -0.0154
