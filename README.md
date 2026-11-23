@@ -553,6 +553,47 @@ Reading:
 
 Results, logs and 24 test figures in [progress/step10_change1/](progress/step10_change1/). AWS shut down Nov 23 10:58 UTC.
 
+### Step 11: check of Chenyue's GlobalMapper run (Nov 23)
+
+Sources: Chenyue's branch (merged, `globalmapper/`), the official repo [Arking1995/GlobalMapper](https://github.com/Arking1995/GlobalMapper) (`train_gnn.yaml`, `train.py`, `graph_trainer.py`, `model.py`, `test.py`) and the paper ([He & Aliaga, ICCV 2023](https://openaccess.thecvf.com/content/ICCV2023/html/He_GlobalMapper_Arbitrary-Shaped_Urban_Layout_Generation_ICCV_2023_paper.html), Sec. 4, Tables 1–2). The branch holds weights, config and logs, **not the code or any generated layouts**, so the checks below are on the training records only.
+
+![GlobalMapper training curves (Chenyue)](globalmapper/training/training_progress.png)
+
+**Training vs the paper**
+
+| | Paper | Chenyue (Nov 23) |
+|---|---|---|
+| Data | 119,236 blocks from 28 North American cities (incl. NYC), 80/20 | released 10K sample, 8,000 / 2,000 |
+| Config | lr 0.001; loss weights geometry 4.0, categories 1.0, KL 0.5 | identical to the repo's `train_gnn.yaml` (batch 200, latent 512, 30 x 4 template) |
+| Training length | "typically converges in 10^5 iterations (9 h on one A5000)" | 50 epochs x 40 batches = **2,000 iterations (2% of the paper)** |
+| Learning rate | 0.001 | 0.001 -> 0.0003 at epoch 14 -> 0.00009 at epoch 19 (see below) |
+
+- **The curves are flattening but the run is short.** Validation existence accuracy 0.836 -> 0.975 (+0.001 over the last 10 epochs); validation geometry loss (position + size, summed) 11,937 -> 2,419, still falling about 1% per 5 epochs.
+- **The learning-rate drops come from the official code, not from a mistake by Chenyue.** `graph_trainer.py` calls `scheduler.step()` every batch, so the MultiStepLR milestones 600 and 800 (meant as 60% and 80% of 1,000 epochs) are reached after 600 and 800 *batches*. With 40 batches per epoch that is epochs 15 and 20, which matches the log. Any run of the released code behaves the same; the replication should state it.
+- **Train and validation accuracy are computed differently in the official code**: training thresholds sigmoid(logit) at 0.5, validation thresholds the raw logit at 0.5 (a probability of about 0.62). The two curves should not be compared directly.
+- **No height.** The released model has heads for existence, position, size, shape type (6) and IoU only; `height_weight: 4.0` in the config is not used anywhere. The paper adds heights only in one Chicago example. **A NYC baseline from this model has no height**, so the height columns of Table 1 cannot be filled from it.
+
+**Sampling at test time (the issue Chenyue noted)**
+
+- `test.py` defaults to `is_reconstruct = True`: each validation block is **encoded** and decoded again (z from the block's own posterior). That is reconstruction, not generation.
+- With `is_reconstruct = False` it samples z from a Gaussian fitted to encoded latents (`val_least_loss_geo_sample_stats`, a file the script never writes), not from N(0, I).
+- Chenyue's README says she used "empirical posterior-mean latent sampling". Whether that means each block's own posterior mean (reconstruction) or one Gaussian over all blocks (generation) is **not clear** without her notebook. This decides which paper table her numbers can be compared with:
+
+| Paper table | Protocol | GlobalMapper | Fits which sampling |
+|---|---|---|---|
+| Table 2 (ablations) | one-to-one on 1,000 validation blocks | Overlap 1.06%, Out-Block 1.25%, Pos-E 3.10%, Cov-E 0.36% | reconstruction (each block's own latent) |
+| Table 1 (main) | 1,000 generated vs 1,000 real layouts, set-to-set | L-Sim 22.45, Overlap 1.42%, Out-Block 0.89%, FID 14.94, WD(bbox) 1.45, WD(count) 0.06 | generation (sampled latent) |
+
+**Verdict**: whether the run reaches the paper's accuracy **cannot be told yet**: no paper metric has been computed, and the branch has no generated layouts. With 2% of the paper's iterations and 8% of its data, a gap is expected.
+
+**What is needed for the replication (§1.7)**, in order:
+1. Chenyue's GlobalMapper code or notebook, and which latent she used.
+2. Run Table 2's protocol on 1,000 validation blocks in reconstruction mode and compute Overlap, Out-Block, Pos-E and Cov-E. These four need no FID or rendering, and Table 2 states the protocol precisely, so this is the most direct comparison.
+3. If time allows: Table 1 (generation; L-Sim, Overlap, Out-Block, WD). FID needs the paper's rendering, so it can be left out with a note.
+4. Optional: train longer. 10^5 iterations on the 10K sample is about 2,500 epochs (about 9 h on an A5000 per the paper).
+
+**For the NYC baseline**: besides converting NYC blocks and rasterising to 4 m, GlobalMapper gives footprints without heights or use. It can fill the realism columns (footprint, boundary, street wall), not the height or use columns.
+
 ---
 
 ## Data audit (Nov 18)
