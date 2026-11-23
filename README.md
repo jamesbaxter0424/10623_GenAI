@@ -29,6 +29,7 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | 5 | Test generation (200 samples × 4) + midway figures | ✅ Scores and figures done; midway draft written |
 | 8–9 | CityDreamer: zero-shot prep, then retrained on NYC and evaluated on 1,000 windows | ✅ Done (Nov 22) |
 | 10 | Change (1): numeric node attributes + street-facing graph; trained 12 h, tested on 1,000 windows, overfitting check on 1,000 training windows | ✅ Done (Nov 23) |
+| — | GlobalMapper (Chenyue, branch `feature/globalmapper-baseline`, merged locally Nov 23): 50 of 1,000 epochs on GlobalMapper's released 10K-block data, weights in `globalmapper/` (Git LFS). **Not yet a baseline**: needs its code, the paper-metric evaluation (replication table), NYC conversion, retraining and 4 m rasterisation. Also merged: `llm/`, a Qwen3-8B request pilot (40 of 40 requests parsed back; same model generates and parses) | 🟡 Training records only |
 | — | Final report first draft (`latex/Final Report.tex`, sections follow the final rubric; red `\todo{}` marks what is missing) | ✅ Draft (Nov 22) |
 
 **Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`, `progress/step10_change1/`. AWS is shut down.
