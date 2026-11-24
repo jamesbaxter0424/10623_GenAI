@@ -1,0 +1,8 @@
+{
+ "targets": 2126,
+ "missing_graph": 10,
+ "prior_fallback": 0,
+ "buildings": 304148,
+ "cut_cells": 71705,
+ "seconds": 144
+}

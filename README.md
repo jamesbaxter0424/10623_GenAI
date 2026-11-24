@@ -29,10 +29,11 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | 5 | Test generation (200 samples × 4) + midway figures | ✅ Scores and figures done; midway draft written |
 | 8–9 | CityDreamer: zero-shot prep, then retrained on NYC and evaluated on 1,000 windows | ✅ Done (Nov 22) |
 | 10 | Change (1): numeric node attributes + street-facing graph; trained 12 h, tested on 1,000 windows, overfitting check on 1,000 training windows | ✅ Done (Nov 23) |
-| — | GlobalMapper (Chenyue, branch `feature/globalmapper-baseline`, merged locally Nov 23): 50 of 1,000 epochs on GlobalMapper's released 10K-block data, weights in `globalmapper/` (Git LFS). **Not yet a baseline**: needs its code, the paper-metric evaluation (replication table), NYC conversion, retraining and 4 m rasterisation. Also merged: `llm/`, a Qwen3-8B request pilot (40 of 40 requests parsed back; same model generates and parses) | 🟡 Training records only |
+| 11 | GlobalMapper check of Chenyue's run (branch `feature/globalmapper-baseline`, merged locally Nov 23; weights in `globalmapper/`, Git LFS). Also merged: `llm/`, a Qwen3-8B request pilot (40 of 40 requests parsed back; same model generates and parses) | ✅ Checked (training records only) |
+| 12 | GlobalMapper retrained on NYC with the official code (James): conversion, 250 epochs / 5.5 h, tested on 1,000 windows in 3 latent modes. Paper-metric replication (Table 2) still open | ✅ Done (Nov 24) |
 | — | Final report first draft (`latex/Final Report.tex`, sections follow the final rubric; red `\todo{}` marks what is missing) | ✅ Draft (Nov 22) |
 
-**Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`, `progress/step10_change1/`. AWS is shut down.
+**Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`, `progress/step10_change1/`, `progress/step12_globalmapper_nyc/`. AWS is shut down.
 
 ---
 
@@ -593,6 +594,58 @@ Sources: Chenyue's branch (merged, `globalmapper/`), the official repo [Arking19
 4. Optional: train longer. 10^5 iterations on the 10K sample is about 2,500 epochs (about 9 h on an A5000 per the paper).
 
 **For the NYC baseline**: besides converting NYC blocks and rasterising to 4 m, GlobalMapper gives footprints without heights or use. It can fill the realism columns (footprint, boundary, street wall), not the height or use columns.
+
+### Step 12: GlobalMapper retrained on NYC with the official code (Nov 23, done)
+
+James took GlobalMapper over from Chenyue. Code in [baselines/globalmapper_nyc/](baselines/globalmapper_nyc/); the official repository is cloned unmodified on AWS (`third_party/GlobalMapper`) and imported by our scripts. It is the **"layout model, no targets, no height"** baseline (group B).
+
+**Conversion of NYC blocks to the official format** (`prep_nyc.py`; the format is not documented, so it was read off the released processed graphs with `reverse_format.py`):
+- One graph per block, 30 x 4 template (120 slots). The release's canonical transform (medial axis of the block, outline simplified by 0.5 m for speed); for about 1% of blocks whose axis is not a single line, a straight axis through the minimum rotated rectangle is used instead.
+- Buildings go to slots by side of the axis (rows 0/1; rows 2/3 for the inner buildings when a side has more than 30) and nearest position bin. Features as in the release: existence, position, size of the oriented bounding box, shape type (6 classes, from the ratio of area to bounding box and the number of reflex corners), occupancy ratio; 64 x 64 block mask and block scale as the condition. Standardised with training-split statistics.
+- Blocks with more than 120 buildings are dropped: train 22,237 of 22,519 blocks, validation 1,440 of 1,445, test 7,299 of 7,385 (as for our other models, NYC train / validation / test splits).
+- Round trip (convert, then the release's inverse transform, then draw on the 4 m grid): coverage error 0.002 against the real map.
+- Bug in the release: `get_k_angle` is called but never defined (patched in our wrapper).
+
+**Training** (`train_nyc.py`, `run_pipeline.sh`): official model, losses, loss weights, optimiser (Adam, lr 0.001), batch 200 and transforms. Changes: our splits; stop after 250 epochs or 12 h; compatibility shims only (`networkx.read_gpickle`, `np.float`, no tensorboard). Overfit gate on 8 blocks first (geometry loss 2,955,510 -> 13.2, existence accuracy 0.993, passed).
+- 250 epochs in **5.5 h** (Nov 23 19:06 – Nov 24 00:36 UTC), about 28,000 iterations (28% of the paper's 10^5).
+- As in Step 11, the release steps the scheduler per batch, so the learning rate fell to 3e-4 at epoch 5 and 9e-5 at epoch 7 and stayed there.
+- Validation geometry loss 17,851 -> 1,994 and still falling (2,227 -> 1,994 over the last 50 epochs); validation existence accuracy 0.987. Training loss is about 4x below validation at the end (3.0k vs 12.4k), so the model fits the training blocks more closely, but validation was still improving. Best checkpoint (lowest validation loss) at epoch 243; weights on AWS in `~/genai-final/checkpoints/globalmapper_nyc/`.
+- **First two attempts wasted about 2.5 h with the GPU idle**: the release's dataset re-scans the whole data folder on every `len()` call (8.6 min per epoch). Found with `py-spy`; fixed by caching the count (1.3 min per epoch). Logs `gm_pipeline_run1_slow.log`, `gm_pipeline_run2_slow.log` on AWS.
+
+![GlobalMapper NYC training curves](progress/step12_globalmapper_nyc/training_curves.png)
+
+**Generation** (`gen_nyc.py`) on the same 1,000 test windows x 4 samples. Each target block is decoded with its own block mask; rectangles go back through the release's inverse transform, are shrunk to the predicted occupancy, and drawn on the real map inside the target block (parts outside the block are cut). Three ways to choose the latent:
+- **random**: the release's `test.py` generation mode, z from a Gaussian fitted to encoded validation blocks.
+- **prior**: the paper's sparse-prior generation (Sec. 4.4, not in the release): z = distance-weighted mean of the encodings of the 5 nearest non-target blocks in the window, plus noise with half the latent std (the paper gives no noise scale). This is how GlobalMapper can use the surroundings.
+- **recon** (reference only, not a baseline): the real target block's own encoding. It shows what the model's representation can do when it knows the answer.
+
+10 of 2,126 target blocks had no graph (more than 120 buildings) and were left empty. About 35 buildings per block per sample. 2 minutes per mode.
+
+**Test, 1,000 windows x 4 samples.** GlobalMapper draws every building as one class (no height, no use), so FAR, height, use, hit rate and boundary are **not meaningful for it** and are left out. Only the class-free columns:
+
+| Metric (lower is better) | Liu, true centers | Change (1) | CityDreamer (NYC) | GM random | GM prior | GM recon (reference) |
+|---|---|---|---|---|---|---|
+| Cov. err. | .123 | **.108** | .151 | .147 | .133 | .062 |
+| Street wall (WD) | **.073** | .081 | .081 | .117 | .131 | .064 |
+| Street wall vs neighbour | .070 | .058 | **.029** | .084 | .059 | .014 |
+| Footprint (WD) | .159 | **.092** | .126 | .231 | .214 | .137 |
+|   region area | **.092** | .098 | .102 | .117 | .145 | .123 |
+|   region convexity | .086 | **.027** | .133 | .192 | .126 | .069 |
+|   nearest-region distance | .171 | **.068** | .085 | .197 | .124 | .071 |
+|   regions per ha | .288 | **.177** | .185 | .415 | .463 | .283 |
+| Diversity (-) | .529 | .495 | .570 | .384 | .267 | .064 |
+
+Paired difference prior - random: coverage error -.014 [-.018, -.009], significant. Results in `evaluation/results/globalmapper_nyc_{random,prior,recon}_test1000`; logs, generation counts and figure in [progress/step12_globalmapper_nyc/](progress/step12_globalmapper_nyc/).
+
+![GlobalMapper NYC test examples](progress/step12_globalmapper_nyc/test_examples.png)
+
+Reading:
+- **Generated GlobalMapper layouts are the weakest on every class-free column** except coverage, where they are close to CityDreamer. The figure shows why: the model scatters many small separate rectangles, while NYC blocks are rows of attached buildings that merge into long strips on the 4 m grid. Regions per hectare and nearest-region distance are off the most.
+- **The sparse prior helps a little**: coverage and street wall vs neighbour get better than random (taking the neighbours' style), with less diversity.
+- **The representation is not the limit; choosing the latent is.** With the block's own encoding (recon), coverage error falls to .062 and street wall vs neighbour to .014, better than every generative model. This supports the planned stage 2 (group C): condition GlobalMapper on the stage-1 coarse map of the target block, which carries much of what recon gets from the true block, and add a height head.
+- **Not checked against the paper's own metrics** (Overlap, Out-Block, Pos-E, Cov-E of Table 2). That replication on the released 10K sample is still open.
+
+AWS shut down Nov 24 01:12 UTC.
 
 ---
 
