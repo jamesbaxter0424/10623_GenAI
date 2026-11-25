@@ -1,0 +1,78 @@
+{
+ "transform": "test",
+ "n_blocks": 1440,
+ "n_batches": 8,
+ "weights": {
+  "exist": 3.0,
+  "pos": 4.0,
+  "size": 4.0,
+  "iou": 1.0,
+  "shape": 0.05,
+  "extsum": 2.0,
+  "kld": 0.5
+ },
+ "raw_per_batch": {
+  "exist": 1411.905652999878,
+  "pos": 650.2225875854492,
+  "size": 1302.054054260254,
+  "iou": 263.92029905319214,
+  "shape": 3773.940986633301,
+  "extsum": 119.0,
+  "kld": 1323.6264038085938
+ },
+ "weighted_per_batch": {
+  "exist": 4235.716958999634,
+  "pos": 2600.890350341797,
+  "size": 5208.216217041016,
+  "iou": 263.92029905319214,
+  "shape": 188.69704933166506,
+  "extsum": 238.0,
+  "kld": 661.8132019042969
+ },
+ "total_per_batch": 13397.254076671601,
+ "share": {
+  "exist": 0.31616306854814463,
+  "pos": 0.19413607709886466,
+  "size": 0.38875251504784025,
+  "iou": 0.019699581536842824,
+  "shape": 0.014084755596315805,
+  "extsum": 0.01776483439352137,
+  "kld": 0.04939916777847039
+ },
+ "weighted_per_block": {
+  "exist": 23.531760883331298,
+  "pos": 14.449390835232204,
+  "size": 28.934534539116754,
+  "iou": 1.4662238836288453,
+  "shape": 1.0483169407314725,
+  "extsum": 1.3222222222222222,
+  "kld": 654.4349704318577
+ },
+ "geometry_per_block_weighted": 43.38392537434896,
+ "geometry_over_kld_per_block": 0.06629218690089281,
+ "kld_effective_weight_vs_summed_terms": 0.002777777777777778,
+ "extsum_has_grad": false,
+ "exist_bce_has_grad": true,
+ "latent": {
+  "dim": 512,
+  "mean_abs_mu": 1.0215401649475098,
+  "mean_over_dims_of_std_of_mu": 1.2065458297729492,
+  "mean_log_var": -4.351385593414307,
+  "mean_posterior_std": 0.12947309017181396,
+  "mean_over_dims_of_std_of_z": 1.2166954278945923,
+  "mean_abs_z_mean": 0.3424912989139557,
+  "kld_per_dim": 2.556386603249444
+ },
+ "buildings_per_block": {
+  "real": 34.33958435058594,
+  "recon": 34.360416412353516,
+  "random_valstats": 35.1118049621582,
+  "standard_normal": 18.327777862548828
+ },
+ "buildings_per_block_median": {
+  "real": 29.0,
+  "recon": 29.0,
+  "random_valstats": 34.0,
+  "standard_normal": 18.0
+ }
+}
