@@ -13,6 +13,7 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | `control-3d-scene/` | Model code. **Adapted from [Liu et al., control-3d-scene](https://github.com/yuhengliu02/control-3d-scene)** (commit `9437101`, MIT License, see `control-3d-scene/LICENSE`). The first commit of this repository imports their code unmodified; all later changes to this folder are ours, so `git diff 4b33356 -- control-3d-scene` lists them. |
 | `nyc-massing-data/` | NYC data pipeline (Daehong). The built data (`data/`, about 2 GB) is not in the repository; run the pipeline to rebuild it. |
 | `latex/` | Not tracked here. The proposal (`main.tex`) and midway executive summary (`midway.tex`) live in the team's Overleaf project; locally `latex/` is a git clone of that project. |
+| `stage2/` | Stage 2: from the 4 m map to individual buildings with heights. Three experiments (raster diffusion, GlobalMapper + map, set diffusion), shared data / metrics / rule baseline. Start at `stage2/README.md` |
 | `progress/` | Figures and logs of each step |
 
 ## Current status
@@ -31,6 +32,8 @@ This file is the progress log of the baseline (the original Liu model on NYC dat
 | 10 | Change (1): numeric node attributes + street-facing graph; trained 12 h, tested on 1,000 windows, overfitting check on 1,000 training windows | ✅ Done (Nov 23) |
 | 11 | GlobalMapper check of Chenyue's run (branch `feature/globalmapper-baseline`, merged locally Nov 23; weights in `globalmapper/`, Git LFS). Also merged: `llm/`, a Qwen3-8B request pilot (40 of 40 requests parsed back; same model generates and parses) | ✅ Checked (training records only) |
 | 12 | GlobalMapper retrained on NYC with the official code (James): conversion, 250 epochs / 5.5 h, tested on 1,000 windows in 3 latent modes. Paper-metric replication (Table 2) still open | ✅ Done (Nov 24) |
+| 13 | Change (3): real map outside the mask as input; 55 epochs on AWS (12.2 h), tested on 1,000 windows (`progress/step13_change3/RESULTS.md`). Street-wall continuity, coverage and FAR improve; height classes 3+ floors and the boundary height step get worse | ✅ Done (Nov 25) |
+| 14 | Stage 2 code (`stage2/`): data, per-building metrics, rule baseline, three experiments; gate A passed by all three (raster 0.055, GlobalMapper + map 0.177, set 0.072; `progress/stage2_design/`). Gate B (2,000 blocks, `progress/stage2_design/gateB/RESULTS.md`): raster 0.167, set 0.175 (after a fix; the first version diverged), GlobalMapper + map 0.363, rule 0.202; raster and set beat the rule on the mean score. GlobalMapper + map and set diffusion are kept as baselines. Hand-over READMEs are ready. Gate C not run | Gates A, B done (Nov 25) |
 | — | Final report first draft (`latex/Final Report.tex`, sections follow the final rubric; red `\todo{}` marks what is missing) | ✅ Draft (Nov 22) |
 
 **Results**: `progress/step5_baseline/`, `progress/step9_citydreamer_nyc/`, `progress/step10_change1/`, `progress/step12_globalmapper_nyc/`. AWS is shut down.
