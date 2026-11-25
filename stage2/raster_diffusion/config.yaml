@@ -1,0 +1,51 @@
+# Conditional diffusion on a 1 m raster (James)
+mode: diffusion          # diffusion | regression (same U-Net, predicts the maps in one pass)
+subset: train
+seed: 0
+
+# data
+crop: [128, 256]         # training crop (across, along the block) in pixels = metres; about 95% of blocks fit
+noise: true              # corrupt the input map (common/noise.py)
+augment: true            # random flips
+workers: 3
+
+# target encoding
+dist_clip: 4.0           # metres; the distance channel saturates here (walls matter, deep interiors do not)
+height_max: 250.0        # metres; log scale
+
+# model
+base: 64
+mults: [1, 2, 3, 4]      # attention at 1/8 resolution
+blocks: 2
+dropout: 0.0
+
+# loss weights
+w_outside: 0.1           # pixels away from the target block
+w_wall: 4.0              # extra weight of the distance channel near walls
+channel_weights: [1.0, 2.0, 1.0]   # building mask, distance, height
+
+# optimisation (steps, not epochs)
+batch: 16
+lr: 0.0002
+weight_decay: 0.01
+warmup: 500
+clip: 1.0
+ema: 0.999
+amp: true
+max_steps: 100000
+max_hours: 12.0
+log_every: 100
+val_every: 2500
+patience: 5
+min_delta: 0.002
+
+# validation and sampling
+val_subset: val200
+val_blocks: 200
+sample_steps: 25         # DDIM steps during validation
+gen_steps: 50            # DDIM steps for the final generation
+
+# maps -> buildings (tune on val200 with tune_instances.py, then freeze)
+core: 1.25               # metres: pixels at least this far from their own wall seed a building
+min_area: 10.0           # m2: smaller fragments are merged into their neighbour
+simplify: 1.0            # metres

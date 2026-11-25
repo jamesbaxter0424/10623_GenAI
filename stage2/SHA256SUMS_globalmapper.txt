@@ -1,0 +1,2 @@
+2dbcc5d07d5ab092da325dabdcfc600c16c04046ae5a23a771bed996b700d7f4  val_least_loss_all.pth
+aaf915804bf3cadba8dd75fb84c6ce96b7de3629f1dea485fef9ecb9a6a4c0a0  gm_nyc.tar

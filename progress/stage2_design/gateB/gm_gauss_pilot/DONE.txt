@@ -1,0 +1,8 @@
+{
+ "stopped": "no improvement",
+ "step": 11000,
+ "hours": 0.387,
+ "best_score": 0.3659456497715803,
+ "gpu": "NVIDIA A10G",
+ "parameters": 6221184
+}

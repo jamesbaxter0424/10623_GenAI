@@ -1,0 +1,46 @@
+# Set diffusion: every building is one token (Daehong)
+subset: train
+seed: 0
+
+# data
+tokens: 128              # max buildings per block (0.3% of the blocks have more)
+order: sorted            # sorted (fixed order + slot embedding) | random (unordered set)
+noise: true              # corrupt the input map (common/noise.py)
+augment: true            # random flips of the block frame
+workers: 3
+
+# model
+dim: 256
+layers: 8
+heads: 8
+dropout: 0.0
+qk_norm: true            # normalised queries and keys, so that attention stays stable (Nov 25 fix)
+
+# loss weights
+w_exist: 1.0             # building / empty
+w_geom: 1.0              # position, size, angle, height of real buildings
+w_overlap: 0.5           # penalty on overlapping boxes (applied to the predicted clean set); 0 = off
+exist_thresh: 0.0        # generated "exist" value above this = a building
+
+# optimisation (steps, not epochs)
+batch: 64
+lr: 0.0001               # 0.0002 diverged after 23,000 steps in the first gate B
+weight_decay: 0.01
+warmup: 1000
+clip: 1.0
+skip_grad: 5.0           # skip a step whose gradient is 5x the recent average (0 = off)
+ema: 0.999
+amp: true
+max_steps: 300000
+max_hours: 12.0
+log_every: 100
+val_every: 2500
+patience: 8
+min_delta: 0.002
+
+# validation and sampling
+val_subset: val200
+val_blocks: 200
+sample_steps: 50         # DDIM steps
+guide_overlap: 0.0       # > 0: push overlapping boxes apart during sampling (try 0.05 - 0.2)
+trim: true               # cut remaining overlaps from the smaller building (false = report raw overlaps)

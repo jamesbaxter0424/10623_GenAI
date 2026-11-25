@@ -1,0 +1,8 @@
+{
+ "stopped": "max_steps",
+ "step": 20000,
+ "hours": 2.314,
+ "best_score": 0.16735520313902913,
+ "gpu": "NVIDIA A10G",
+ "parameters": 20979779
+}

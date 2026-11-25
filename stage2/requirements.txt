@@ -1,0 +1,12 @@
+# torch is installed separately to match your CUDA (2.5 or newer)
+numpy
+pandas
+pyarrow
+scipy
+shapely>=2.1        # coverage_simplify needs GEOS >= 3.12
+scikit-image
+pyyaml
+matplotlib
+pytest
+# only for globalmapper_map (Chenyue):
+# torch_geometric networkx scikit-learn torchvision pillow

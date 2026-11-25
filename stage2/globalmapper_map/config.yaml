@@ -1,0 +1,40 @@
+# GlobalMapper driven by the 4 m map (Chenyue)
+head: codes              # codes (COHO-style 20 levels, masked prediction) | gaussian (fallback: p(z | map) as a normal)
+subset: train
+seed: 0
+
+# data
+noise: true              # corrupt the input map (common/noise.py)
+workers: 3
+
+# latent
+levels: 20               # bins per latent dimension (COHO uses 20)
+group: 8                 # latent dimensions per token (512 / 8 = 64 tokens)
+
+# model
+dim: 256
+layers: 6
+heads: 8
+dropout: 0.1
+
+# optimisation (steps, not epochs)
+batch: 128
+lr: 0.0003
+weight_decay: 0.01
+warmup: 500
+clip: 1.0
+ema: 0.999
+amp: true
+max_steps: 200000
+max_hours: 12.0
+log_every: 100
+val_every: 2500
+patience: 8
+min_delta: 0.002
+
+# validation and sampling
+val_subset: val200
+val_blocks: 200
+rounds: 12               # masked-prediction rounds (COHO: 12)
+temperature: 1.0         # tune on val200: 0.5 - 1.0 (lower = safer, less varied)
+trim: true               # cut overlaps from the smaller building (false = report raw overlaps)
