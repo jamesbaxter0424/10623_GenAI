@@ -42,3 +42,29 @@ Thumbs.db
 # Evaluation: cache and large per-row tables stay local (summaries are kept)
 evaluation/cache/
 evaluation/results/*/*.csv
+
+# Research notes and reports: local only
+/reports/
+/research_notes/
+
+# Stage 2: built data, checkpoints, predictions and per-block tables stay local
+stage2/data/
+stage2/data_small/
+stage2/out/
+stage2/results/*/per_block.csv
+/stage2/README_zh.md
+
+# Local only: NCSA (Delta/DeltaAI) scripts with account paths, unused Delta configs of change (3), raw gate-A run folders
+control-3d-scene/scripts/delta_c3*.sbatch
+control-3d-scene/scripts/c3_segment.sh
+control-3d-scene/scripts/run_change3.sh
+control-3d-scene/configs/nyc_train_c3.yaml
+control-3d-scene/configs/nyc_infer_c3.yaml
+stage2/raster_diffusion/deltaai/
+progress/stage2_design/gate_a_logs/stage2/
+progress/stage2_design/gate_a_logs/out_gmtest/
+# Stage 2 raw run logs and per-100-step training logs: local only (results, figures and val.csv are kept)
+progress/stage2_design/gate_a_logs/
+progress/stage2_design/gateB/logs/
+progress/stage2_design/gateB/logs_sdfix/
+progress/stage2_design/gateB/*/log.csv
