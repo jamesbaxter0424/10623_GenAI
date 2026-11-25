@@ -107,12 +107,12 @@ class ConditionalDiffusion(torch.nn.Module):
     def q_sample(self, log_x_start, t):
         return self.log_sample_categorical(self.q_pred(log_x_start, t))
 
-    def kl_prior(self, log_x_start):
+    def kl_prior(self, log_x_start, reduce=sum_except_batch):
         b = log_x_start.size(0)
         ones = torch.ones(b, device=log_x_start.device).long()
         log_qxT = self.q_pred(log_x_start, t=(self.num_timesteps - 1) * ones)
         log_half = -torch.log(self.num_classes * torch.ones_like(log_qxT))
-        return sum_except_batch(self.multinomial_kl(log_qxT, log_half))
+        return reduce(self.multinomial_kl(log_qxT, log_half))
 
     def sample_time(self, b, device, method="importance"):
         if method == "importance":
@@ -126,19 +126,33 @@ class ConditionalDiffusion(torch.nn.Module):
         t = torch.randint(0, self.num_timesteps, (b,), device=device).long()
         return t, torch.ones_like(t).float() / self.num_timesteps
 
-    def forward(self, x, cond):
+    def forward(self, x, cond, mask=None):
+        """mask (change 3, optional): bool [B, *spatial], True = cells to generate. Noise is
+        applied only inside the mask (outside stays the real map) and every loss term is
+        summed over the masked cells only, then rescaled by cells / masked cells so that the
+        per-cell scale (and the importance-sampling history) matches the unmasked loss.
+        mask=None gives exactly the original behaviour."""
         b, device = x.size(0), x.device
         spatial = x.size()[1:]
         t, pt = self.sample_time(b, device, "importance")
 
         log_x_start = index_to_log_onehot(x, self.num_classes)
         log_x_t = self.q_sample(log_x_start, t)
+        if mask is not None:
+            m = mask.unsqueeze(1)
+            log_x_t = torch.where(m, log_x_t, log_x_start)
+            w = mask.float()
+            n_cells = float(np.prod(spatial))
+            scale = n_cells / w.flatten(1).sum(1).clamp(min=1.0)
+            msum = lambda v: (v * w).flatten(1).sum(1) * scale
+        else:
+            msum = sum_except_batch
 
         log_true_prob = self.q_posterior(log_x_start, log_x_t, t)
         log_model_prob, log_x0_recon = self.p_pred(log_x_t, t, cond)
 
-        kl = sum_except_batch(self.multinomial_kl(log_true_prob, log_model_prob))
-        decoder_nll = sum_except_batch(-log_categorical(log_x_start, log_model_prob))
+        kl = msum(self.multinomial_kl(log_true_prob, log_model_prob))
+        decoder_nll = msum(-log_categorical(log_x_start, log_model_prob))
         mask = (t == 0).float()
         kl_loss = mask * decoder_nll + (1.0 - mask) * kl
 
@@ -149,9 +163,9 @@ class ConditionalDiffusion(torch.nn.Module):
             self.Lt_history.scatter_(dim=0, index=t, src=new_hist)
             self.Lt_count.scatter_add_(dim=0, index=t, src=torch.ones_like(Lt2))
 
-        loss = kl_loss / pt + self.kl_prior(log_x_start)
+        loss = kl_loss / pt + self.kl_prior(log_x_start, msum)
 
-        kl_aux = sum_except_batch(
+        kl_aux = msum(
             self.multinomial_kl(log_x_start[:, :-1], log_x0_recon[:, :-1]))
         kl_aux_loss = mask * decoder_nll + (1.0 - mask) * kl_aux
         weight = (1 - t / self.num_timesteps) + 1.0 if self.adaptive_auxiliary_loss else 1.0
@@ -160,7 +174,9 @@ class ConditionalDiffusion(torch.nn.Module):
         return loss.sum() / (spatial[0] * spatial[1])
 
     @torch.no_grad()
-    def sample(self, cond, num_steps=None):
+    def sample(self, cond, num_steps=None, x_known=None, mask=None):
+        """x_known, mask (change 3, optional): the real map [B, *spatial] and the cells to
+        generate; cells outside the mask are reset to the real map at every step."""
         device = self.log_alpha.device
         b = cond.size(0)
         spatial = cond.size()[2:]
@@ -168,8 +184,14 @@ class ConditionalDiffusion(torch.nn.Module):
 
         log_z = self.log_sample_categorical(
             torch.zeros((b, self.num_classes) + tuple(spatial), device=device))
+        if mask is not None:
+            m = mask.unsqueeze(1)
+            log_known = index_to_log_onehot(x_known, self.num_classes)
+            log_z = torch.where(m, log_z, log_known)
         for i in reversed(range(num_steps)):
             t = torch.full((b,), i, device=device, dtype=torch.long)
             log_model_prob, _ = self.p_pred(log_z, t, cond)
             log_z = self.log_sample_categorical(log_model_prob)
+            if mask is not None:
+                log_z = torch.where(m, log_z, log_known)
         return log_onehot_to_index(log_z)

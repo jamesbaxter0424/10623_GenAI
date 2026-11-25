@@ -33,7 +33,10 @@ class Generator:
         done = 0
         for batch in tqdm(self.loader, desc="generate[nyc]"):
             sg = batch["scene_graph"].to(self.device)
-            gens = [self.module.sample(sg, num_steps=self.num_steps, use_gt_positions=use_gt)
+            ctx = {}
+            if self.cfg.get("context", False):     # change 3: real map outside the mask
+                ctx = {"bev": batch["bev"].to(self.device), "mask": batch["mask"].to(self.device)}
+            gens = [self.module.sample(sg, num_steps=self.num_steps, use_gt_positions=use_gt, **ctx)
                     .cpu().numpy().astype(np.uint8) for _ in range(S)]
             gens = np.stack(gens, 1)                       # [B, S, H, W]
             gt = batch["bev"].numpy().astype(np.uint8)

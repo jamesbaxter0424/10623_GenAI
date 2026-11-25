@@ -11,8 +11,11 @@ class SGtoBEV(nn.Module):
     def __init__(self, num_classes=11, in_channels=34, hidden_channels=32, heads=4,
                  bev_size=64, num_timesteps=100, auxiliary_loss_weight=1e-4,
                  recon_loss_weight=0.2, seg_loss_weight=0.2,
-                 uncond_prob=0.1, gumbel_tau=2.0, overlap_move=5, edge_dim=None):
+                 uncond_prob=0.1, gumbel_tau=2.0, overlap_move=5, edge_dim=None,
+                 context=False):
         super().__init__()
+        self.context = context      # change 3: the real map outside the mask + the mask
+        self.num_classes = num_classes
         self.bev_size = bev_size
         self.hidden_channels = hidden_channels
         self.recon_loss_weight = recon_loss_weight
@@ -22,7 +25,8 @@ class SGtoBEV(nn.Module):
         self.overlap_move = overlap_move
 
         self.gnn = SceneGraphGNN(in_channels, hidden_channels, heads, num_classes, bev_size, edge_dim)
-        denoise = Denoise(num_classes, cond_channels=hidden_channels,
+        cond_channels = hidden_channels + (num_classes + 1 if context else 0)
+        denoise = Denoise(num_classes, cond_channels=cond_channels,
                           up_height_pooling=False)
         self.diffusion = ConditionalDiffusion(denoise, num_classes, num_timesteps,
                                               auxiliary_loss_weight)
@@ -36,12 +40,24 @@ class SGtoBEV(nn.Module):
             bem = torch.where(drop, torch.ones_like(bem), bem)
         return bem
 
-    def forward(self, scene_graph, bev=None, mode="joint"):
+    def _with_context(self, bem, bev, mask):
+        """Change 3: condition = [BEM (graph; the only part dropped for classifier-free
+        dropout), one-hot real map outside the mask (zeros inside), mask]."""
+        known = F.one_hot(bev.long(), self.num_classes).permute(0, 3, 1, 2).float()
+        known = known * (~mask).unsqueeze(1).float()
+        ctx = torch.cat([known, mask.unsqueeze(1).float()], 1).unsqueeze(-1)
+        return torch.cat([bem, ctx], 1)
+
+    def forward(self, scene_graph, bev=None, mode="joint", mask=None):
         if mode == "loc":
             return {"total": self.loc_loss(scene_graph)}
         gnn_out = self.gnn(scene_graph)
         bem = self._bem(gnn_out, scene_graph, scene_graph.heatmaps)
-        diff_loss = self.diffusion(bev.unsqueeze(-1), bem)
+        if self.context:
+            cond = self._with_context(bem, bev, mask)
+            diff_loss = self.diffusion(bev.unsqueeze(-1), cond, mask=mask.unsqueeze(-1))
+        else:
+            diff_loss = self.diffusion(bev.unsqueeze(-1), bem)
         recon_loss = self.gnn.edge_recon_loss(gnn_out["node_emb"], scene_graph.edge_index)
         seg_loss = F.cross_entropy(gnn_out["cls_logits"], scene_graph.y)
         total = ((1 - self.recon_loss_weight - self.seg_loss_weight) * diff_loss
@@ -56,7 +72,8 @@ class SGtoBEV(nn.Module):
         return F.cross_entropy(gnn_out["loc_logits"], target)
 
     @torch.no_grad()
-    def sample(self, scene_graph, tau=None, num_steps=None, use_gt_positions=False):
+    def sample(self, scene_graph, tau=None, num_steps=None, use_gt_positions=False,
+               bev=None, mask=None):
         gnn_out = self.gnn(scene_graph)
         if use_gt_positions:  # diagnostic: skip the localization head
             positions = scene_graph.heatmaps
@@ -66,8 +83,13 @@ class SGtoBEV(nn.Module):
                 tau=self.gumbel_tau if tau is None else tau, move=self.overlap_move)
         num_graphs = int(scene_graph.batch.max()) + 1
         bem = build_bem(gnn_out["cane"], positions, scene_graph.batch, num_graphs)
-        bev = self.diffusion.sample(bem, num_steps)
-        return bev.squeeze(-1)
+        if self.context:
+            cond = self._with_context(bem, bev, mask)
+            out = self.diffusion.sample(cond, num_steps, x_known=bev.unsqueeze(-1),
+                                        mask=mask.unsqueeze(-1))
+        else:
+            out = self.diffusion.sample(bem, num_steps)
+        return out.squeeze(-1)
 
     def freeze_localization_head(self):
         for p in self.gnn.localization_head.parameters():

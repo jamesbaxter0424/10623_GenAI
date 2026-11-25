@@ -42,6 +42,8 @@ class Trainer:
             if self.cfg.mode == "loc_posttrain":
                 return self.model(sg, mode="loc")
             bev = batch["bev"].to(self.device)
+            if self.cfg.get("context", False):   # change 3: target-block mask
+                return self.model(sg, bev, mode="joint", mask=batch["mask"].to(self.device))
             return self.model(sg, bev, mode="joint")
         bev = batch["bev"].to(self.device)
         scene = batch["scene_3d"].to(self.device)
@@ -56,10 +58,18 @@ class Trainer:
         print_every = self.cfg.get("print_every", 20)
         line_end = "\n" if self.cfg.get("log_newline", False) else "\r"
         epoch = self.start_epoch
+        # whole_epochs (change 3, Slurm segments): never cut an epoch; stop before an epoch that
+        # would not finish within max_hours, and save latest.tar after every epoch.
+        whole = self.cfg.get("whole_epochs", False)
+        last_epoch_h = 0.0
         for epoch in range(self.start_epoch, self.cfg.epochs):
-            if self._out_of_time():
+            el_h = (time.time() - self.t0) / 3600
+            if self._out_of_time() or (whole and self.cfg.get("max_hours", None)
+                                       and el_h + 1.1 * last_epoch_h >= float(self.cfg.max_hours)):
                 print(f"\nTime budget of {self.cfg.max_hours} h reached before epoch {epoch + 1}.")
+                epoch -= 1  # latest.tar records the last finished epoch
                 break
+            t_epoch = time.time()
             self.model.train()
             if self.sampler is not None:
                 self.sampler.set_epoch(epoch)
@@ -93,7 +103,7 @@ class Trainer:
                     print(f"[{self.cfg.stage}/{self.cfg.mode}] epoch {epoch + 1}/{self.cfg.epochs} "
                           f"iter {count}/{len(self.loader)} | {msg} | {el:.2f} h", end=line_end,
                           flush=True)
-                if self._out_of_time():
+                if not whole and self._out_of_time():
                     break
 
             if self.scheduler_epoch:
@@ -106,6 +116,9 @@ class Trainer:
                     self.writer.add_scalar(f"train/{k}", v, epoch + 1)
                 if (epoch + 1) % self.cfg.check_every == 0:
                     self._save_checkpoint(epoch + 1)
+                elif whole:
+                    self._save_checkpoint(epoch + 1, name="latest.tar")
+            last_epoch_h = (time.time() - t_epoch) / 3600
         if is_main_process():
             self._save_checkpoint(epoch + 1, name="latest.tar")
 
